@@ -1,5 +1,5 @@
 import React from "react";
-import { Text, Image, View,TextInput, TouchableOpacity,Keyboard, KeyboardAvoidingView, Platform, TouchableWithoutFeedback, ScrollView} from "react-native";
+import { Text, Image, View,TextInput, TouchableOpacity,Keyboard, KeyboardAvoidingView, Platform, TouchableWithoutFeedback} from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import style from "./style";
 import MaskedView from "@react-native-masked-view/masked-view";
@@ -20,8 +20,11 @@ const Login = (props) => {
   const handleSubmit = () => {}
   return (
     <SafeAreaView style={style.container}>
-      
-          <View style={style.containerView}>
+      {/* <KeyboardAvoidingView
+        behavior={Platform.OS === 'android' ? 'padding' : 'height'}
+        style={{flex: 1,}}> */}
+          {/* <TouchableWithoutFeedback onPress={Keyboard.dismiss}> */}
+            <View style={style.containerView}>
               <View style={[style.centerElement]}>
                 <Image
                   style={style.centerIcon}
@@ -94,6 +97,8 @@ const Login = (props) => {
                   </TouchableOpacity>
               </View>
             </View>
+          {/* </TouchableWithoutFeedback>
+      </KeyboardAvoidingView> */}
     </SafeAreaView>
   );
 };
