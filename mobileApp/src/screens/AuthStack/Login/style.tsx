@@ -19,6 +19,9 @@ const style = StyleSheet.create({
         padding: "10%",
         paddingTop: "15%",
     },
+    scrollbar: {
+        flex:1,
+    },
     centerElement: {
         // display: "flex",
         // justifyContent: "center",
@@ -66,7 +69,6 @@ const style = StyleSheet.create({
         borderWidth: 2,
         borderColor: 'white',
         padding: 12,
-        marginBottom: 5,
         width: width,
     },
     passwordinputStyle: {

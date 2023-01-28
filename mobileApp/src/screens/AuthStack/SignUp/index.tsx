@@ -6,6 +6,8 @@ import MaskedView from "@react-native-masked-view/masked-view";
 import { LinearGradient } from 'expo-linear-gradient';
 import { Colors } from "../../../ref/colors";
 import { useFonts } from 'expo-font';
+import SplashScreen from "../SplashScreen";
+import GradientText from '../../../Components/GradientText';
 
 
 const SignUp = (props) => {
@@ -16,6 +18,10 @@ const SignUp = (props) => {
   const [fontsLoaded] = useFonts({
     'Rubik': require('../../../../assets/font/Rubik/static/Rubik-Medium.ttf'),
 });
+
+  if(!fontsLoaded){
+    return <SplashScreen/>;
+  }
 
   const handleSubmit = () => {}
   return (
@@ -31,15 +37,7 @@ const SignUp = (props) => {
                   source={require('../../../../assets/home_map.png')}
                 />
               </View>
-              <MaskedView maskElement={<Text style={[style.welcomeText,{fontFamily:'Rubik'}]}>WELCOME!{`\n`}</Text>}>
-              <LinearGradient 
-                start={{x:0,y:0}}
-                end={{x:0.6,y:0.8}}
-                colors={[Colors.Grad1,Colors.Grad2]}
-              >
-              <Text style={[style.welcomeText,{opacity: 0,fontFamily:'Rubik'}]}>WELCOME!{`\n`}</Text>
-              </LinearGradient>
-              </MaskedView>
+              <GradientText text={'WELCOME\n'} style={style.welcomeText}/>
               <View style={style.fieldView}>
                 <View style={style.usernameView}>
                   <TextInput

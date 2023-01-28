@@ -1,11 +1,10 @@
 import React from "react";
-import { Text, Image, View,TextInput, TouchableOpacity,Keyboard, KeyboardAvoidingView, Platform, TouchableWithoutFeedback, ScrollView} from "react-native";
+import { Text, Image, View,TextInput, TouchableOpacity,Keyboard, KeyboardAvoidingView, Platform, ScrollView} from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import style from "./style";
-import MaskedView from "@react-native-masked-view/masked-view";
-import { LinearGradient } from 'expo-linear-gradient';
 import { Colors } from "../../../ref/colors";
-import { useFonts } from 'expo-font';
+import SplashScreen from "../SplashScreen";
+import GradientText from '../../../Components/GradientText';
 
 
 const Login = (props) => {
@@ -13,30 +12,20 @@ const Login = (props) => {
   const [username, setUsername] = React.useState('');
   const [password, setPassword] = React.useState('');
 
-  const [fontsLoaded] = useFonts({
-    'Rubik': require('../../../../assets/font/Rubik/static/Rubik-Medium.ttf'),
-});
-
   const handleSubmit = () => {}
   return (
     <SafeAreaView style={style.container}>
-      
-          <View style={style.containerView}>
+          <KeyboardAvoidingView style={style.containerView}
+          behavior={Platform.OS === "ios" ? "padding" : "height"}
+          >
+            <ScrollView style={style.scrollbar}>
               <View style={[style.centerElement]}>
                 <Image
                   style={style.centerIcon}
                   source={require('../../../../assets/home_map.png')}
                 />
               </View>
-              <MaskedView maskElement={<Text style={[style.welcomeText,{fontFamily:'Rubik'}]}>WELCOME{`\n`}BACK!</Text>}>
-              <LinearGradient 
-                start={{x:0,y:0}}
-                end={{x:0.6,y:0.8}}
-                colors={[Colors.Grad1,Colors.Grad2]}
-              >
-              <Text style={[style.welcomeText,{opacity: 0,fontFamily:'Rubik'}]}>WELCOME{`\n`}BACK!</Text>
-              </LinearGradient>
-              </MaskedView>
+              <GradientText text={'WELCOME\nBACK!'} style={style.welcomeText}/>
               <View style={style.fieldView}>
                 <View style={style.usernameView}>
                   <TextInput
@@ -93,7 +82,8 @@ const Login = (props) => {
                       </View> 
                   </TouchableOpacity>
               </View>
-            </View>
+              </ScrollView>
+          </KeyboardAvoidingView>
     </SafeAreaView>
   );
 };
