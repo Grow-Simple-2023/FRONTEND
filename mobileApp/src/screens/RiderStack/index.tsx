@@ -31,7 +31,6 @@ const RiderScreen = () => {
   var scrollView=null;
   useState(() => {
     setTimeout(() => {
-      console.log(scrollView);
       if(scrollView!=null)
         scrollView.scrollTo({x: -30}) }, 1000)
   });
