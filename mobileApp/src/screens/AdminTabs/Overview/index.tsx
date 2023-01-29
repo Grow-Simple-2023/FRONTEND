@@ -1,23 +1,14 @@
 import { useNavigation } from "@react-navigation/native";
-import React, { useLayoutEffect } from "react";
+import React, { useEffect, useLayoutEffect, useState } from "react";
 import { ScrollView, StyleSheet, Text, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import HeaderBar from "../../../Components/HeaderBar";
 import { Colors } from "../../../ref/colors";
 import { LinearGradient } from "expo-linear-gradient";
-// import { Table, Row, Rows } from 'react-native-table-component';
+import AdminTable from "../../../Components/AdminTable";
 
 const Overview = () => {
   const navigation = useNavigation();
-  const tableHead = ['Head', 'Head2', 'Head3', 'Head4']
-   const tableData = [
-        ['1', '2', '3', '4'],
-        ['a', 'b', 'c', 'd'],
-        ['1', '2', '3', '456\n789'],
-        ['a', 'b', 'c', 'd']
-      ]
-  // const [rowData, setRowData] = useState([])
-  // const [tableData, setTableData] = useState([]);
 
   useLayoutEffect(() => {
     navigation.setOptions({
@@ -41,10 +32,7 @@ const Overview = () => {
         </View>
         <View style={styles.table}>
           <ScrollView horizontal={true}>
-          {/* <Table borderStyle={{borderWidth: 2, borderColor: '#c8e1ff'}}>
-          <Row data={tableHead} />
-          <Rows data={tableData} />
-        </Table> */}
+            <AdminTable /> 
           </ScrollView>
         </View>
       </View>
