@@ -6,7 +6,6 @@ import { Colors } from "../../../ref/colors";
 import SplashScreen from "../SplashScreen";
 import GradientText from '../../../Components/GradientText';
 
-
 const Login = (props) => {
 
   const [username, setUsername] = React.useState('');
@@ -15,10 +14,10 @@ const Login = (props) => {
   const handleSubmit = () => {}
   return (
     <SafeAreaView style={style.container}>
-          <KeyboardAvoidingView style={style.containerView}
+          {/* <KeyboardAvoidingView style={style.containerView}
           behavior={Platform.OS === "ios" ? "padding" : "height"}
-          >
-            <ScrollView style={style.scrollbar}>
+          > */}
+            <ScrollView style={style.containerView}>
               <View style={[style.centerElement]}>
                 <Image
                   style={style.centerIcon}
@@ -83,7 +82,7 @@ const Login = (props) => {
                   </TouchableOpacity>
               </View>
               </ScrollView>
-          </KeyboardAvoidingView>
+          {/* </KeyboardAvoidingView> */}
     </SafeAreaView>
   );
 };
