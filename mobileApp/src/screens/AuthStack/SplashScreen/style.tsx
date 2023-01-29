@@ -3,15 +3,19 @@ import { StyleSheet } from "react-native";
 import { Colors } from "../../../ref/colors";
 
 const style = StyleSheet.create({
-  centerIcon: {
+  container: {
     flex: 1,
-    /* justifyContent: 'center', */
-    /* alignItems: 'center', */
-    backgroundColor: Colors.Background
+    backgroundColor: Colors.Background,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  centerIcon: {
+    justifyContent: 'center',
+    alignItems: 'center',
   },
   textColor: {
     color: Colors.Text
-  }
+  },
 });
 
 export default style;

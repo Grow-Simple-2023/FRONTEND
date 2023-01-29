@@ -1,5 +1,5 @@
 import React from "react";
-import { View, Text } from "react-native";
+import { View, Text,Image } from "react-native";
 import { useFocusEffect } from "@react-navigation/native";
 import { SafeAreaView } from "react-native-safe-area-context";
 
@@ -16,7 +16,7 @@ const SplashScreen = (props) => {
       // Check if the user is Authenticated.
       // If he is, then take him to the screen he is supposed to see.
       // Otherwise, take him to Login
-      setRoute("AdminTabs");
+      setRoute("Login");
       setApiLoading(true);
     }, [])
   );
@@ -38,8 +38,11 @@ const SplashScreen = (props) => {
   );
 
   return (
-    <SafeAreaView style={style.centerIcon}>
-      <Text style={style.textColor}>SplashScreen</Text>
+    <SafeAreaView style={style.container}>
+      <Image
+        style={style.centerIcon}
+        source={require('../../../../assets/home_map.png')}
+      />
     </SafeAreaView>
   );
 };
