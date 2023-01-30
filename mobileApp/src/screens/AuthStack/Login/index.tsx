@@ -5,13 +5,44 @@ import style from "./style";
 import { Colors } from "../../../ref/colors";
 import SplashScreen from "../SplashScreen";
 import GradientText from '../../../Components/GradientText';
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import { apiendpoint } from "../../../constants/apiendpoint";
 
-const Login = (props) => {
+const Login = (props: any) => {
 
   const [username, setUsername] = React.useState('');
   const [password, setPassword] = React.useState('');
 
-  const handleSubmit = () => {}
+  const handleSubmit = async () => {
+    // var jwt = await AsyncStorage.getItem("@jwtauth");
+    // if (!jwt) jwt = "";
+    fetch(`${apiendpoint}/login`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        // Authorization: `Bearer ${jwt}`
+      },
+      body: JSON.stringify({
+        phone_no: username,
+        password,
+      })
+    }).then(res => {
+      console.log(res.status);
+      if (res.ok) return res.json();
+      else throw new Error("Unauthorized");
+    }).then(json => {
+      console.log(JSON.stringify(json, null, 2));
+      const saveData = async () => {
+        await AsyncStorage.setItem("@jwtauth", json.access_token);
+      }
+      saveData();
+      if(json.user.role == "RIDER")
+        props.navigation.navigate("Rider")
+      else if (json.user.role == "ADMIN")
+        props.navigation.navigate("AdminTabs")
+    }).catch(console.log);
+  }
+
   return (
     <SafeAreaView style={style.container}>
           {/* <KeyboardAvoidingView style={style.containerView}

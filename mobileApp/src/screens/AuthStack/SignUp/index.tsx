@@ -33,7 +33,7 @@ const SignUp = (props: any) => {
         // Authorization: `Bearer ${jwt}`
       },
       body: JSON.stringify({
-        phone_no: "1234567892",
+        phone_no: username,
         password,
         confirm_password: password,
         first_name: "",
