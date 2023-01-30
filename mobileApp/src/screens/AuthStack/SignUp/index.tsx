@@ -38,7 +38,7 @@ const SignUp = (props: any) => {
         confirm_password: password,
         first_name: "",
         last_name: "",
-        role: "RIDER"
+        role: "ADMIN"
       })
     }).then(res => {
       console.log(res.status);
