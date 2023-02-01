@@ -36,10 +36,6 @@ const Login = (props: any) => {
         await AsyncStorage.setItem("@jwtauth", json.access_token);
       }
       saveData();
-      if(json.user.role == "RIDER")
-        props.navigation.navigate("Rider")
-      else if (json.user.role == "ADMIN")
-        props.navigation.navigate("AdminTabs")
     }).catch(console.log);
   }
 

@@ -1,9 +1,11 @@
 import React from "react";
-import { View, Text,Image } from "react-native";
+import { View, Text, Image } from "react-native";
 import { useFocusEffect } from "@react-navigation/native";
 import { SafeAreaView } from "react-native-safe-area-context";
 
 import style from "./style";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import { apiendpoint } from "../../../constants/apiendpoint";
 
 const SplashScreen = (props) => {
   const fontsLoaded = true;
@@ -16,7 +18,31 @@ const SplashScreen = (props) => {
       // Check if the user is Authenticated.
       // If he is, then take him to the screen he is supposed to see.
       // Otherwise, take him to Login
-      setRoute("Login");
+      const getJWT = async () => {
+        var jwt = await AsyncStorage.getItem("@jwtauth");
+        if (!jwt) jwt = "";
+        return jwt;
+      };
+      const jwt = getJWT();
+      if (!jwt) setRoute("Login");
+      else
+        fetch(`${apiendpoint}/decode-token`, {
+          method: "POST",
+          headers: {
+            "Content-type": "application/json",
+            Credentials: `Bearer ${jwt}`
+          }
+        })
+          .then((res) => {
+            console.log(res.status);
+            if (res.ok) return res.json();
+            else throw new Error("Unauthorized");
+          })
+          .then((json) => {
+            if (json.role === "ADMIN") setRoute("AdminTabs");
+            else if (json.role === "RIDER") setRoute("Rider");
+          })
+          .catch(console.log);
       setApiLoading(true);
     }, [])
   );
@@ -41,7 +67,7 @@ const SplashScreen = (props) => {
     <SafeAreaView style={style.container}>
       <Image
         style={style.centerIcon}
-        source={require('../../../../assets/home_map.png')}
+        source={require("../../../../assets/home_map.png")}
       />
     </SafeAreaView>
   );
