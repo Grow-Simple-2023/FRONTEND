@@ -3,7 +3,7 @@ import React, { useLayoutEffect } from "react";
 import { ScrollView, StyleSheet, Text, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import HeaderBar from "../../../Components/HeaderBar";
-import OrderItem from "../../../Components/OrderItem";
+import OrderItem from "../../../Components/OrderItems";
 import { Colors } from "../../../ref/colors";
 
 const Orders = () => {

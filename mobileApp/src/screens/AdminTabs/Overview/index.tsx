@@ -11,8 +11,15 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 
 const Overview = () => {
   const navigation = useNavigation();
+
   const [username, setUsername] = useState('Samy');
   const [percentage, setPerc] = useState(0);
+
+  const [item, setItem] = useState('obj_demo');
+  const [address, setAddress] = useState('address_demo');
+  const [edd, setEdd] = useState('edd_demo');
+  const [rider, setRider] = useState(0);
+
 
   useLayoutEffect(() => {
     navigation.setOptions({
@@ -50,7 +57,66 @@ const Overview = () => {
       // }
       //saveData();
     }).catch(console.log);
+    fetch(`${apiendpoint}/manager/items/object1`, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        "Credentials": `Bearer ${jwt}`
+      },
+    }).then(res => {
+      console.log(res.status);
+      if (res.ok == true) return res.json();
+      else throw new Error("Unauthorized");
+    }).then(json => {
+      console.log(JSON.stringify(json,null,2));
+      setItem(json.item.title);
+      setAddress(json.item.address);
+      setEdd(json.item.EDD);
+      setRider(json.item.phone_number);
+      // const saveData = async () => {
+      //   await AsyncStorage.setItem("@jwtauth", json.auth.access_token);
+      //   await AsyncStorage.setItem("@role", json.user.role);
+      // }
+      //saveData();
+    }).catch(console.log);
   }
+
+
+
+  
+const tableData = [
+  {
+    item: item,
+    address: address,
+    edd: edd,
+    rider: rider,
+  },
+  {
+    item: "item A",
+    address:
+      "Address A, 123 Street Address A, 123 Street Address A, 123 Street",
+    edd: "tomorrow",
+    rider: "Shyam Charan",
+  },
+  {
+    item: "item A",
+    address: "Address A, 123 Street",
+    edd: "today",
+    rider: "Shyam Charan",
+  },
+  {
+    item: "item A",
+    address: "Address A, 123 Street",
+    edd: "today",
+    rider: "Shyam Charan",
+  },
+  {
+    item: "item A",
+    address: "Address A, 123 Street",
+    edd: "today",
+    rider: "Shyam Charan",
+  },
+];
 
   return (
     <SafeAreaView style={styles.container}>
@@ -68,7 +134,7 @@ const Overview = () => {
         </View>
         <View style={styles.table}>
           <ScrollView horizontal={true}>
-            <AdminTable /> 
+            <AdminTable data={tableData}/> 
           </ScrollView>
         </View>
       </View>

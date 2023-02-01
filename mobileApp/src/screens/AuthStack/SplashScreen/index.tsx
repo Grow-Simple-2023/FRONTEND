@@ -5,7 +5,7 @@ import { SafeAreaView } from "react-native-safe-area-context";
 
 import style from "./style";
 
-const SplashScreen = (props) => {
+const SplashScreen = (props: any) => {
   const fontsLoaded = true;
   const [splashLoaded, setSplash] = React.useState(false);
   const [apiLoaded, setApiLoading] = React.useState(false);
