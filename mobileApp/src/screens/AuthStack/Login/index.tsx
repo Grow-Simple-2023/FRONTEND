@@ -24,7 +24,7 @@ const Login = (props: any) => {
       },
       body: JSON.stringify({
         phone_no: username,
-        password,
+        password: password,
       })
     }).then(res => {
       console.log(res.status);
@@ -32,10 +32,14 @@ const Login = (props: any) => {
       else throw new Error("Unauthorized");
     }).then(json => {
       console.log(JSON.stringify(json, null, 2));
+      console.log(username);
       const saveData = async () => {
-        await AsyncStorage.setItem("@jwtauth", json.access_token);
+        await AsyncStorage.setItem("@jwtauth", json.token.access_token);
+        await AsyncStorage.setItem("userid", String(username));
       }
       saveData();
+      if (json.role === "ADMIN")
+        props.navigation.navigate("AdminTabs")
     }).catch(console.log);
   }
 
