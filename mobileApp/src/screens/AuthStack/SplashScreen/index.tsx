@@ -41,9 +41,12 @@ const SplashScreen = (props) => {
           .then((json) => {
             if (json.role === "ADMIN") setRoute("AdminTabs");
             else if (json.role === "RIDER") setRoute("Rider");
+            setApiLoading(true);
           })
-          .catch(console.log);
-      setApiLoading(true);
+          .catch((err) => {
+            console.log(err);
+            setApiLoading(true);
+          });
     }, [])
   );
 
