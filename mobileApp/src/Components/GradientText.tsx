@@ -9,7 +9,7 @@ import SplashScreen from "../screens/AuthStack/SplashScreen";
 
 
 
-const GradientText = (props) => {
+const GradientText = (props: any) => {
     const text = props.text;
     const style = props.style;
     const [fontsLoaded] = useFonts({

@@ -1,48 +1,17 @@
 import { View, Text, StyleSheet, ScrollView } from "react-native";
 import React, { useEffect, useState } from "react";
 import { Colors } from "../ref/colors";
-const tableData = [
-  {
-    item: "item A",
-    address: "Address A, 123 Street Address A, 123 Street",
-    edd: "today",
-    rider: "Shyam Charan",
-  },
-  {
-    item: "item A",
-    address:
-      "Address A, 123 Street Address A, 123 Street Address A, 123 Street",
-    edd: "tomorrow",
-    rider: "Shyam Charan",
-  },
-  {
-    item: "item A",
-    address: "Address A, 123 Street",
-    edd: "today",
-    rider: "Shyam Charan",
-  },
-  {
-    item: "item A",
-    address: "Address A, 123 Street",
-    edd: "today",
-    rider: "Shyam Charan",
-  },
-  {
-    item: "item A",
-    address: "Address A, 123 Street",
-    edd: "today",
-    rider: "Shyam Charan",
-  },
-];
 
-const AdminTable = () => {
+
+const AdminTable = (props) => {
+  const data = props.data;
   return (
     <ScrollView>
       <View style={styles.container}>
         <View style={[styles.items, styles.head]}>
           <Text style={styles.heading}>Item</Text>
           <View style={styles.content}>
-            {tableData.map((data, index) => {
+            {data.map((data, index) => {
               return (
                 <Text style={styles.entry} key={index}>
                   {data.item}
@@ -54,7 +23,7 @@ const AdminTable = () => {
         <View style={[styles.address, styles.head]}>
           <Text style={styles.heading}>Address</Text>
           <View style={styles.content}>
-            {tableData.map((data, index) => {
+            {data.map((data, index) => {
               return (
                 <ScrollView>
                   <Text style={styles.entry} key={index}>
@@ -69,7 +38,7 @@ const AdminTable = () => {
         <View style={[styles.edd, styles.head]}>
           <Text style={styles.heading}>edd</Text>
           <View style={styles.content}>
-            {tableData.map((data, index) => {
+            {data.map((data, index) => {
               return (
                 <Text style={styles.entry} key={index}>
                   {data.edd}
@@ -81,7 +50,7 @@ const AdminTable = () => {
         <View style={[styles.riders, styles.head]}>
           <Text style={styles.heading}>rider</Text>
           <View style={styles.content}>
-            {tableData.map((data, index) => {
+            {data.map((data, index) => {
               return (
                 <Text style={styles.entry} key={index}>
                   {data.rider}
@@ -141,4 +110,5 @@ const styles = StyleSheet.create({
     borderBottomWidth: 0.25,
   },
 });
+
 export default AdminTable;

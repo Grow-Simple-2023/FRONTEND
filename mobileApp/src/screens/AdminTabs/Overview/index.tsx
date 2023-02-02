@@ -6,9 +6,20 @@ import HeaderBar from "../../../Components/HeaderBar";
 import { Colors } from "../../../ref/colors";
 import { LinearGradient } from "expo-linear-gradient";
 import AdminTable from "../../../Components/AdminTable";
+import { apiendpoint } from "../../../constants/apiendpoint";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 const Overview = () => {
   const navigation = useNavigation();
+
+  const [username, setUsername] = useState('Samy');
+  const [percentage, setPerc] = useState(0);
+
+  const [item, setItem] = useState('obj_demo');
+  const [address, setAddress] = useState('address_demo');
+  const [edd, setEdd] = useState('edd_demo');
+  const [rider, setRider] = useState(0);
+
 
   useLayoutEffect(() => {
     navigation.setOptions({
@@ -16,23 +27,114 @@ const Overview = () => {
     });
   }, []);
 
+  useEffect(() => {
+    handleSubmit()
+  }, []);
+
+  const handleSubmit = async () => {
+    var jwt = await AsyncStorage.getItem("@jwtauth");
+    var user = await AsyncStorage.getItem("userid");
+    if (!user) user = "Samy";
+    if (!jwt) jwt = "";
+    console.log(jwt);
+    console.log(user);
+    setUsername(user);
+    fetch(`${apiendpoint}/manager/OTD-percentage`, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        "Credentials": `Bearer ${jwt}`
+      },
+    }).then(res => {
+      console.log(res.status);
+      if (res.ok == true) return res.json();
+      else throw new Error("Unauthorized");
+    }).then(json => {
+      setPerc(json.percentage);
+      // const saveData = async () => {
+      //   await AsyncStorage.setItem("@jwtauth", json.auth.access_token);
+      //   await AsyncStorage.setItem("@role", json.user.role);
+      // }
+      //saveData();
+    }).catch(console.log);
+    fetch(`${apiendpoint}/manager/items/object1`, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        "Credentials": `Bearer ${jwt}`
+      },
+    }).then(res => {
+      console.log(res.status);
+      if (res.ok == true) return res.json();
+      else throw new Error("Unauthorized");
+    }).then(json => {
+      console.log(JSON.stringify(json,null,2));
+      setItem(json.item.title);
+      setAddress(json.item.address);
+      setEdd(json.item.EDD);
+      setRider(json.item.phone_number);
+      // const saveData = async () => {
+      //   await AsyncStorage.setItem("@jwtauth", json.auth.access_token);
+      //   await AsyncStorage.setItem("@role", json.user.role);
+      // }
+      //saveData();
+    }).catch(console.log);
+  }
+
+
+
+  
+const tableData = [
+  {
+    item: item,
+    address: address,
+    edd: edd,
+    rider: rider,
+  },
+  {
+    item: "item A",
+    address:
+      "Address A, 123 Street Address A, 123 Street Address A, 123 Street",
+    edd: "tomorrow",
+    rider: "Shyam Charan",
+  },
+  {
+    item: "item A",
+    address: "Address A, 123 Street",
+    edd: "today",
+    rider: "Shyam Charan",
+  },
+  {
+    item: "item A",
+    address: "Address A, 123 Street",
+    edd: "today",
+    rider: "Shyam Charan",
+  },
+  {
+    item: "item A",
+    address: "Address A, 123 Street",
+    edd: "today",
+    rider: "Shyam Charan",
+  },
+];
+
   return (
     <SafeAreaView style={styles.container}>
       <HeaderBar />
       <View style={styles.body}>
         <View>
-          <Text style={styles.name}>Welcome, Samy!</Text>
+          <Text style={styles.name}>Welcome, {username}!</Text>
           <Text style={styles.para}>Get a look at the deliveries</Text>
         </View>
         <LinearGradient style={styles.boxDist} colors={["#AE67F9", "#F1966E"]}>
           <Text style={styles.boxDistText}>X Km Distance Travelled</Text>
         </LinearGradient>
         <View style={styles.boxTime}>
-          <Text style={styles.boxtTimeText}>x% Delivered Time</Text>
+          <Text style={styles.boxtTimeText}>{percentage}% Delivered Time</Text>
         </View>
         <View style={styles.table}>
           <ScrollView horizontal={true}>
-            <AdminTable /> 
+            <AdminTable data={tableData}/> 
           </ScrollView>
         </View>
       </View>

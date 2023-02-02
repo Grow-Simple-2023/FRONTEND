@@ -1,49 +1,102 @@
-import React, {useLayoutEffect, useEffect, useState} from "react";
+import React, { useLayoutEffect, useEffect, useState } from "react";
 import { ScrollView, View, Dimensions, Text } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
+import MapViewDirections from "react-native-maps-directions";
+import MapView from "react-native-maps";
 import style from "./style";
 import { useNavigation } from "@react-navigation/native";
 import OrderItem from "../../Components/OrderItems";
 import GradientText from "../../Components/GradientText";
-
-
-
+import HeaderBar from "../../Components/HeaderBar";
+import { Colors } from "../../ref/colors";
+import { apiendpoint } from "../../constants/apiendpoint";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 const RiderScreen = () => {
-  const { width } = Dimensions.get('window');
-  const orders = [
+  const { width } = Dimensions.get("window");
+  const [orders, setOrders] = useState([
     { name: "Item 1", status: "delivered" },
-    { name: "Item 1", status: "Started delivering" },
-    { name: "Item 1", status: "delivered" },
-    { name: "Item 1", status: "delivering" },
-    { name: "Item 1", status: "delivered" },
-    { name: "Item 1", status: "delivered" },
-    { name: "Item 1", status: "delivering" },
-    { name: "Item 1", status: "delivering" },
-    { name: "Item 1", status: "delivered" },
-  ];
+    { name: "Item 2", status: "Started delivering" },
+    { name: "Item 3", status: "delivered" },
+    { name: "Item 4", status: "delivering" },
+    { name: "Item 5", status: "delivered" },
+    { name: "Item 6", status: "delivered" },
+    { name: "Item 7", status: "delivering" },
+    { name: "Item 8", status: "delivering" },
+    { name: "Item 9", status: "delivered" }
+  ]);
+  const origin = { latitude: 37.3318456, longitude: -122.0296002 };
+  const destination = { latitude: 37.771707, longitude: -122.4053769 };
   const navigation = useNavigation();
   useLayoutEffect(() => {
     navigation.setOptions({
-      headerShown: false,
+      headerShown: false
     });
   }, []);
-  var scrollView=null;
-  useState(() => {
-    setTimeout(() => {
-      if(scrollView!=null)
-        scrollView.scrollTo({x: -30}) }, 1000)
-  });
+
+  useEffect(() => {
+    const func = async () => {
+      const phoneNO = await AsyncStorage.getItem("@userid");
+      const jwt = await AsyncStorage.getItem("@jwtauth");
+      fetch(`${apiendpoint}/riders/route/${phoneNO}`, {
+        method: "GET",
+        headers: {
+          "Content-type": "application/json",
+          Credentials: `Bearer ${jwt}`
+        }
+      })
+        .then((res: any) => {
+          console.log(res.status);
+          if (res.ok) return res.json();
+          else throw new Error("Unauthorized");
+        })
+        .then((json: any) => {
+          console.log(JSON.stringify(json, null, 2));
+        })
+        .catch(console.log);
+    };
+    func();
+  }, []);
+
   return (
     <SafeAreaView style={style.container}>
-      <View style={{backgroundColor: 'cyan',height: '100%', width: '100%',flex: 1,position: 'absolute'}}></View>
-      <View style={style.scrollviewstyle}>
-        <View style={style.separatornotch}><GradientText/></View>
+      <View
+        style={{
+          backgroundColor: Colors.Background,
+          height: "100%",
+          width: "100%",
+          flex: 1,
+          position: "absolute"
+        }}
+      >
+        <HeaderBar />
+        <MapView
+          style={{ flex: 1 }}
+          region={{
+            latitude: 15.5171,
+            longitude: 74.927,
+            latitudeDelta: 0.0922,
+            longitudeDelta: 0.0421
+          }}
+          showsUserLocation={true}
+          showsMyLocationButton={true}
+          userInterfaceStyle={"dark"}
+        >
+          {/* <MapViewDirections */}
+          {/*   origin={origin} */}
+          {/*   destination={destination} */}
+          {/*   apikey={"AIzaSyBB2BvPYkpTOl_-dB8VyibUrOQjjz0hv30"} */}
+          {/* /> */}
+        </MapView>
+      </View>
+      <View>
+        {/* <View style={style.separatornotch}> */}
+        {/*   <GradientText /> */}
+        {/* </View> */}
         <View style={style.orderItems}>
           <ScrollView
-            ref={(scrollViewValue) => { scrollView = scrollViewValue}}
             pagingEnabled={true}
-            horizontal= {true}
+            horizontal={true}
             decelerationRate={0}
             snapToInterval={width - 60}
             snapToAlignment={"center"}
@@ -51,16 +104,22 @@ const RiderScreen = () => {
               top: 0,
               left: 30,
               bottom: 0,
-              right: 30,
-            }}>
-              {orders.map((order)=>{
-                return (
-                  <OrderItem name={order.name} status={order.status} />
-                )
-              })}
-            </ScrollView>
-          </View>
+              right: 30
+            }}
+          >
+            {orders.map((order, id) => {
+              return (
+                <OrderItem
+                  key={id}
+                  transparent
+                  name={order.name}
+                  status={order.status}
+                />
+              );
+            })}
+          </ScrollView>
         </View>
+      </View>
     </SafeAreaView>
   );
 };
