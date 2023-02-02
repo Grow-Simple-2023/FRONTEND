@@ -7,7 +7,7 @@ import style from "./style";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { apiendpoint } from "../../../constants/apiendpoint";
 
-const SplashScreen = (props) => {
+const SplashScreen = (props: any) => {
   const fontsLoaded = true;
   const [splashLoaded, setSplash] = React.useState(false);
   const [apiLoaded, setApiLoading] = React.useState(false);
