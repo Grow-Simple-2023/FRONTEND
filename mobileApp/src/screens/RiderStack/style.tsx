@@ -32,7 +32,7 @@ const style = StyleSheet.create({
     orderItems: {
         marginTop: TrackItemNotchElementSpace,
         flexDirection: "row",
-        backgroundColor: Colors.Background,
+        /* backgroundColor: Colors.Background, */
         justifyContent: "center",
         alignItems:'center',
     },

@@ -21,32 +21,35 @@ const SplashScreen = (props: any) => {
       const getJWT = async () => {
         var jwt = await AsyncStorage.getItem("@jwtauth");
         if (!jwt) jwt = "";
-        return jwt;
+        /* console.log(jwt); */
+        if (!jwt) {
+          setRoute("Login");
+          setApiLoading(true);
+        } else
+          fetch(`${apiendpoint}/decode-token`, {
+            method: "GET",
+            headers: {
+              "Content-type": "application/json",
+              Credentials: `Bearer ${jwt}`
+            }
+          })
+            .then((res) => {
+              console.log(res.status);
+              if (res.ok) return res.json();
+              else throw new Error("Unauthorized");
+            })
+            .then((json) => {
+              if (json.role === "ADMIN") setRoute("AdminTabs");
+              else if (json.role === "RIDER") setRoute("Rider");
+              setApiLoading(true);
+            })
+            .catch((err) => {
+              console.log(err);
+              setRoute("Login");
+              setApiLoading(true);
+            });
       };
-      const jwt = getJWT();
-      if (!jwt) setRoute("Login");
-      else
-        fetch(`${apiendpoint}/decode-token`, {
-          method: "POST",
-          headers: {
-            "Content-type": "application/json",
-            Credentials: `Bearer ${jwt}`
-          }
-        })
-          .then((res) => {
-            console.log(res.status);
-            if (res.ok) return res.json();
-            else throw new Error("Unauthorized");
-          })
-          .then((json) => {
-            if (json.role === "ADMIN") setRoute("AdminTabs");
-            else if (json.role === "RIDER") setRoute("Rider");
-            setApiLoading(true);
-          })
-          .catch((err) => {
-            console.log(err);
-            setApiLoading(true);
-          });
+      getJWT();
     }, [])
   );
 
@@ -54,7 +57,7 @@ const SplashScreen = (props: any) => {
     React.useCallback(() => {
       setTimeout(() => {
         setSplash(true);
-      }, 2500);
+      }, 5000);
     }, [])
   );
 
