@@ -9,7 +9,7 @@ import AdminTable from "../../../Components/AdminTable";
 import { apiendpoint } from "../../../constants/apiendpoint";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
-const Overview = () => {
+const Overview = (props: any) => {
   const navigation = useNavigation();
 
   const [username, setUsername] = useState('Samy');
@@ -81,7 +81,7 @@ const Overview = () => {
 
   return (
     <SafeAreaView style={styles.container}>
-      <HeaderBar />
+      <HeaderBar navigation={props.navigation}/>
       <View style={styles.body}>
         <View>
           <Text style={styles.name}>Welcome, {username}!</Text>

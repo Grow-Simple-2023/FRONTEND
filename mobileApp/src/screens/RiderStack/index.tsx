@@ -15,18 +15,11 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 const RiderScreen = () => {
   const { width } = Dimensions.get("window");
   const [orders, setOrders] = useState([
-    { name: "Item 1", status: "delivered" },
-    { name: "Item 2", status: "Started delivering" },
-    { name: "Item 3", status: "delivered" },
-    { name: "Item 4", status: "delivering" },
-    { name: "Item 5", status: "delivered" },
-    { name: "Item 6", status: "delivered" },
-    { name: "Item 7", status: "delivering" },
-    { name: "Item 8", status: "delivering" },
-    { name: "Item 9", status: "delivered" }
   ]);
   const origin = { latitude: 37.3318456, longitude: -122.0296002 };
   const destination = { latitude: 37.771707, longitude: -122.4053769 };
+  const [assign,setassign] = useState(true);
+
   const navigation = useNavigation();
   useLayoutEffect(() => {
     navigation.setOptions({
@@ -52,6 +45,10 @@ const RiderScreen = () => {
         })
         .then((json: any) => {
           console.log(JSON.stringify(json, null, 2));
+          if(json.detail){
+            setassign(false);
+          }
+          setOrders(json.route.items_in_order[0]);
         })
         .catch(console.log);
     };
@@ -93,6 +90,9 @@ const RiderScreen = () => {
         {/* <View style={style.separatornotch}> */}
         {/*   <GradientText /> */}
         {/* </View> */}
+        {
+        (!assign)?<Text style={{color:'white'}}>Rider is Not Assigned</Text>:''
+        }
         <View style={style.orderItems}>
           <ScrollView
             pagingEnabled={true}
@@ -107,13 +107,13 @@ const RiderScreen = () => {
               right: 30
             }}
           >
-            {orders.map((order, id) => {
+            {orders?.map((order, id) => {
               return (
                 <OrderItem
                   key={id}
                   transparent
-                  name={order.name}
-                  status={order.status}
+                  name={order.title}
+                  status={"needs to be delivered"}
                 />
               );
             })}

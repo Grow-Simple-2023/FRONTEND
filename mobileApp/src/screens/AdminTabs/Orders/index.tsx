@@ -8,7 +8,7 @@ import { Colors } from "../../../ref/colors";
 import { apiendpoint } from "../../../constants/apiendpoint";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
-const Orders = () => {
+const Orders = (props: any) => {
   const [orders,setOrder] = useState([]);
   const navigation = useNavigation();
   useLayoutEffect(() => {
@@ -36,7 +36,7 @@ const Orders = () => {
       if (res.ok == true) return res.json();
       else throw new Error("Unauthorized");
     }).then(json => {
-      console.log(json["items_in_delivery"][0].items_in_order);
+      //console.log(json["items_in_delivery"][0].items_in_order);
       setOrder(json["items_in_delivery"][0].items_in_order);
       // const saveData = async () => {
       //   await AsyncStorage.setItem("@jwtauth", json.auth.access_token);
@@ -47,7 +47,7 @@ const Orders = () => {
   }
   return (
     <SafeAreaView style={styles.container}>
-      <HeaderBar />
+      <HeaderBar navigation={props.navigation}/>
       <View style={styles.orderItems}>
         <ScrollView>
           {orders?.map((order)=>{
