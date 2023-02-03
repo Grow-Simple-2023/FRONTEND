@@ -17,3 +17,9 @@
 body{
     background-color: #040C18;
 }
+.textGradient {
+    /* font-size: 72px; */
+    background: -webkit-linear-gradient(left, #AE67F9, #F1966E 60%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }

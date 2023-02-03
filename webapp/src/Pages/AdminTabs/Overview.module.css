@@ -36,11 +36,11 @@
 }
 
 .headCell{
-    color: #81AFDD;
+    color: #81AFDD !important;
 
 }
 .bodyCell{
-    color: #fff;
+    color: #fff !important;
    
 }
 .btn{
@@ -57,4 +57,9 @@
 }
 .btn span:hover{
     cursor: pointer;
+}
+@media only screen and (max-width: 600px){
+    .overveiw{
+        font-size: 0.8rem;
+    }
 }

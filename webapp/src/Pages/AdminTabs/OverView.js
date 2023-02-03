@@ -103,9 +103,6 @@ const OverView = () => {
                   style={{ borderBottom: "1.5px solid black" }}
                   key={index}
                 >
-                  {/* <TableCell component="th" scope="row">
-                    {row.name}
-                  </TableCell> */}
                   <TableCell className={classes.bodyCell}>{row.item}</TableCell>
                   <TableCell className={classes.bodyCell}>
                     {row.address}
