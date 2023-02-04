@@ -7,8 +7,7 @@ const TrackItemNotchElementSpace = 10;
 const style = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: 'white',
-        justifyContent: "flex-end",
+        backgroundColor: Colors.Background,
         alignItems:'center',
     },
     scrollviewstyle: {
