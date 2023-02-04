@@ -6,19 +6,19 @@ import MapView from "react-native-maps";
 import style from "./style";
 import { useNavigation } from "@react-navigation/native";
 import BingMapsView from 'react-native-bing-maps';
-import OrderItem from "../../Components/OrderItems";
-import GradientText from "../../Components/GradientText";
-import HeaderBar from "../../Components/HeaderBar";
-import { Colors } from "../../ref/colors";
-import { apiendpoint } from "../../constants/apiendpoint";
+import OrderItem from "../../../Components/RiderItems";
+import GradientText from "../../../Components/GradientText";
+import HeaderBar from "../../../Components/HeaderBar";
+import { Colors } from "../../../ref/colors";
+import { apiendpoint } from "../../../constants/apiendpoint";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
 const RiderScreen = (props: any) => {
   const { width } = Dimensions.get("window");
-  const [orders, setOrders] = useState([
-  ]);
-  // const origin = { latitude: 37.3318456, longitude: -122.0296002 };
-  // const destination = { latitude: 37.771707, longitude: -122.4053769 };
+  const [orders, setOrders] = useState([]);
+  const [delivering, setDelivering] = useState({});
+  const origin = { latitude: 37.3318456, longitude: -122.0296002 };
+  const destination = { latitude: 37.771707, longitude: -122.4053769 };
   const [assign,setassign] = useState(true);
 
   const navigation = useNavigation();
@@ -53,6 +53,7 @@ const RiderScreen = (props: any) => {
             setassign(false);
           }
           setOrders(json.route.items_in_order);
+          setDelivering(json.route.items_in_order[0]);
         })
         .catch(console.log);
     };
@@ -83,11 +84,11 @@ const RiderScreen = (props: any) => {
           showsMyLocationButton={true}
           userInterfaceStyle={"dark"}
         >
-          {/* <MapViewDirections
+          <MapViewDirections
             origin={origin}
             destination={destination}
-            apikey={"AIzaSyBB2BvPYkpTOl_-dB8VyibUrOQjjz0hv30"}
-          /> */}
+            apikey={"AtD6KKbxZbMGumtiusZaHBClfullYMvlqCbIacNNkQQu-ONLx-95xel_a6y45wTH"}
+          />
         </MapView>
         {/* <BingMapsView
           credentialsKey="AtD6KKbxZbMGumtiusZaHBClfullYMvlqCbIacNNkQQu-ONLx-95xel_a6y45wTH"
@@ -122,7 +123,9 @@ const RiderScreen = (props: any) => {
                   key={id}
                   transparent={false}
                   name={order.title}
-                  status={"needs to be delivered"}
+                  delivering={delivering}
+                  setDelivering={setDelivering}
+                  order={order}
                 />
               );
             })}

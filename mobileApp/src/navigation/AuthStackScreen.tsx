@@ -4,7 +4,7 @@ import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import SplashScreen from "../screens/AuthStack/SplashScreen";
 import Login from "../screens/AuthStack/Login";
 import SignUp from "../screens/AuthStack/SignUp";
-import RiderScreen from "../screens/RiderStack";
+import RiderScreen from "../screens/RiderStack/MapView";
 import AdminTabs from "./AdminTabs";
 
 const AuthStack = createNativeStackNavigator();
