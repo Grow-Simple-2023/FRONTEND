@@ -5,7 +5,6 @@ import MapViewDirections from "react-native-maps-directions";
 import MapView from "react-native-maps";
 import style from "./style";
 import { useNavigation } from "@react-navigation/native";
-import BingMapsView from 'react-native-bing-maps';
 import OrderItem from "../../../Components/RiderItems";
 import GradientText from "../../../Components/GradientText";
 import HeaderBar from "../../../Components/HeaderBar";
