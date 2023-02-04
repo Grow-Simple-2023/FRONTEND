@@ -83,17 +83,17 @@ const RiderScreen = (props: any) => {
           showsMyLocationButton={true}
           userInterfaceStyle={"dark"}
         >
-          <MapViewDirections
+          {/* <MapViewDirections
             origin={origin}
             destination={destination}
             apikey={"AIzaSyBB2BvPYkpTOl_-dB8VyibUrOQjjz0hv30"}
-          />
-        </MapView> */}
-        <BingMapsView
-          credentialsKey="your_bing_maps_api_key"
+          /> */}
+        </MapView>
+        {/* <BingMapsView
+          credentialsKey="AtD6KKbxZbMGumtiusZaHBClfullYMvlqCbIacNNkQQu-ONLx-95xel_a6y45wTH"
           mapLocation={{ lat: 12.9010875, long: 77.6095084, zoom: 15 }}
           // style={styles.box}
-        />
+        /> */}
       </View>
       <View>
         {/* <View style={style.separatornotch}> */}
@@ -120,7 +120,7 @@ const RiderScreen = (props: any) => {
               return (
                 <OrderItem
                   key={id}
-                  transparent
+                  transparent={false}
                   name={order.title}
                   status={"needs to be delivered"}
                 />

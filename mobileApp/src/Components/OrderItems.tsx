@@ -5,7 +5,7 @@ import GradrientText from './GradientText'
 
 const OrderItem = (props: any) => {
   return (
-    <View style={styles.container}>
+    <View style={[styles.container, props.transparent ? styles.transparent : styles.opaque]}>
       <Text style={styles.orderName}>{props.name}</Text>
       <GradrientText text={'currently being delivered'} style={styles.ordStatus}/>
       <Text style={styles.contact}>Contact : {props.rider_no}</Text>
@@ -16,12 +16,18 @@ const OrderItem = (props: any) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "rgba(217, 217, 217, 0.1);",
     margin: 10,
     borderRadius: 10,
     padding: 10,
     paddingTop: 15,
     paddingLeft: 15,
+    width: 300
+  },
+  transparent: {
+    backgroundColor: "rgba(217, 217, 217, 0.1);",
+  },
+  opaque: {
+    backgroundColor: Colors.Background,
   },
   textColor: {
     color: Colors.Text,

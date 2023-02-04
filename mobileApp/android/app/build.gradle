@@ -168,9 +168,9 @@ android {
             }
         }
     }
-    
+
     buildTypes.each {
-        it.buildConfigField "String", "CREDENTIALS_KEY", "\"$credentialsKey\""
+        it.buildConfigField "String", "AtD6KKbxZbMGumtiusZaHBClfullYMvlqCbIacNNkQQu-ONLx-95xel_a6y45wTH", "\"$credentialsKey\""
     }
 
     if (isNewArchitectureEnabled()) {
