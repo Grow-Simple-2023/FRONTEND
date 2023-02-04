@@ -1,40 +1,15 @@
-import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
+import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
 import React from "react";
 import { Colors } from "../ref/colors";
-import GradrientText from "./GradientText";
-
-const OrderContainer = (props: any) => {
-  return props.interact ? (
-    <View
-      style={[
-        styles.container,
-        props.transparent ? styles.transparent : styles.opaque
-      ]}
-    >
-      {props.children}
-    </View>
-  ) : (
-    <TouchableOpacity
-      style={[
-        styles.container,
-        props.transparent ? styles.transparent : styles.opaque
-      ]}
-    >
-      {props.children}
-    </TouchableOpacity>
-  );
-};
+import GradrientText from './GradientText'
 
 const OrderItem = (props: any) => {
   return (
-    <OrderContainer>
+    <View style={[styles.container, props.transparent ? styles.transparent : styles.opaque]}>
       <Text style={styles.orderName}>{props.name}</Text>
-      <GradrientText
-        text={"currently being delivered"}
-        style={styles.ordStatus}
-      />
+      <GradrientText text={'currently being delivered'} style={styles.ordStatus}/>
       <Text style={styles.contact}>Contact : {props.rider_no}</Text>
-    </OrderContainer>
+    </View>
   );
 };
 
@@ -48,28 +23,28 @@ const styles = StyleSheet.create({
     width: 300
   },
   transparent: {
-    backgroundColor: "rgba(217, 217, 217, 0.1);"
+    backgroundColor: "rgba(217, 217, 217, 0.1);",
   },
   opaque: {
-    backgroundColor: Colors.Background
+    backgroundColor: Colors.Background,
   },
   textColor: {
-    color: Colors.Text
+    color: Colors.Text,
   },
   contact: {
-    justifyItems: "flex-end",
-    textAlign: "right",
+    justifyItems:'flex-end',
+    textAlign:'right',
     color: Colors.Grad1,
-    fontWeight: "800",
-    fontSize: 10
+    fontWeight: '800',
+    fontSize: 10,
   },
   orderName: {
     color: Colors.Theme,
-    fontSize: 25
+    fontSize: 25,
   },
   ordStatus: {
     paddingVertical: 5
-  }
+  },
 });
 
 export default OrderItem;
