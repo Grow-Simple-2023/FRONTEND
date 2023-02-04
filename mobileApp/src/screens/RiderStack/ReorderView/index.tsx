@@ -13,11 +13,19 @@ import { Colors } from "../../../ref/colors";
 import { apiendpoint } from "../../../constants/apiendpoint";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
-const RiderScreen = (props: any) => {
+const ReorderScreen = (props: any) => {
+
+  const navigation = useNavigation();
+  useLayoutEffect(() => {
+    navigation.setOptions({
+      headerShown: false
+    });
+  }, []);
+
   return (
     <SafeAreaView style={style.container}>
     </SafeAreaView>
   );
 };
 
-export default RiderScreen;
+export default ReorderScreen;

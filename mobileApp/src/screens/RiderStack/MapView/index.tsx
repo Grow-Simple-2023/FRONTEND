@@ -1,5 +1,5 @@
 import React, { useLayoutEffect, useEffect, useState } from "react";
-import { ScrollView, View, Dimensions, Text } from "react-native";
+import { ScrollView, View, Dimensions, Text, TouchableOpacity } from 'react-native';
 import { SafeAreaView } from "react-native-safe-area-context";
 import MapViewDirections from "react-native-maps-directions";
 import MapView from "react-native-maps";
@@ -96,10 +96,10 @@ const RiderScreen = (props: any) => {
           // style={styles.box}
         /> */}
       </View>
+      <TouchableOpacity onPress={() => props.navigation.navigate("Reorder", { orders })} style={{backgroundColor: Colors.Background, padding: 10, borderRadius: 10}}>
+        <Text style={{color: Colors.Theme}}>Reorder</Text>
+      </TouchableOpacity>
       <View>
-        {/* <View style={style.separatornotch}> */}
-        {/*   <GradientText /> */}
-        {/* </View> */}
         {
         (!assign)?<Text style={{color:'white'}}>Rider is Not Assigned</Text>:''
         }

@@ -1,6 +1,6 @@
 import { StyleSheet } from "react-native";
 
-import { Colors } from "../../ref/colors";
+import { Colors } from "../../../ref/colors";
 
 const TrackItemNotchElementSpace = 10;
 

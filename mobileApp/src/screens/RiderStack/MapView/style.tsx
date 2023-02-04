@@ -1,6 +1,6 @@
 import { StyleSheet } from "react-native";
 
-import { Colors } from "../../ref/colors";
+import { Colors } from "../../../ref/colors";
 
 const TrackItemNotchElementSpace = 10;
 
@@ -35,6 +35,9 @@ const style = StyleSheet.create({
         /* backgroundColor: Colors.Background, */
         justifyContent: "center",
         alignItems:'center',
+    },
+    ordStatus: {
+        paddingVertical: 5
     },
 });
 

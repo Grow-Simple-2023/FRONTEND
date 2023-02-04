@@ -5,6 +5,7 @@ import SplashScreen from "../screens/AuthStack/SplashScreen";
 import Login from "../screens/AuthStack/Login";
 import SignUp from "../screens/AuthStack/SignUp";
 import RiderScreen from "../screens/RiderStack/MapView";
+import ReorderScreen from "../screens/RiderStack/ReorderView";
 import AdminTabs from "./AdminTabs";
 
 const AuthStack = createNativeStackNavigator();
@@ -30,6 +31,11 @@ const AuthStackScreen = () => {
       <AuthStack.Screen
         name="Rider"
         component={RiderScreen}
+        options={{ headerShown: false }}
+      />
+      <AuthStack.Screen
+        name="Reorder"
+        component={ReorderScreen}
         options={{ headerShown: false }}
       />
       <AuthStack.Screen
