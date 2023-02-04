@@ -5,19 +5,19 @@ import MapViewDirections from "react-native-maps-directions";
 import MapView from "react-native-maps";
 import style from "./style";
 import { useNavigation } from "@react-navigation/native";
-import OrderItem from "../../Components/OrderItems";
+import OrderItem from "../../Components/RiderItems";
 import GradientText from "../../Components/GradientText";
 import HeaderBar from "../../Components/HeaderBar";
 import { Colors } from "../../ref/colors";
 import { apiendpoint } from "../../constants/apiendpoint";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
-const RiderScreen = () => {
+const RiderScreen = (props: any) => {
   const { width } = Dimensions.get("window");
   const [orders, setOrders] = useState([
   ]);
-  const origin = { latitude: 37.3318456, longitude: -122.0296002 };
-  const destination = { latitude: 37.771707, longitude: -122.4053769 };
+  // const origin = { latitude: 37.3318456, longitude: -122.0296002 };
+  // const destination = { latitude: 37.771707, longitude: -122.4053769 };
   const [assign,setassign] = useState(true);
 
   const navigation = useNavigation();
@@ -29,9 +29,12 @@ const RiderScreen = () => {
 
   useEffect(() => {
     const func = async () => {
-      const phoneNO = await AsyncStorage.getItem("@userid");
-      const jwt = await AsyncStorage.getItem("@jwtauth");
-      fetch(`${apiendpoint}/riders/route/${phoneNO}`, {
+      var phoneNO = await AsyncStorage.getItem("userid");
+      var jwt = await AsyncStorage.getItem("@jwtauth");
+      if (!jwt) jwt = "";
+      console.log(jwt);
+      console.log(phoneNO);
+      fetch(`${apiendpoint}/rider/route/${phoneNO}`, {
         method: "GET",
         headers: {
           "Content-type": "application/json",
@@ -48,7 +51,7 @@ const RiderScreen = () => {
           if(json.detail){
             setassign(false);
           }
-          setOrders(json.route.items_in_order[0]);
+          setOrders(json.route.items_in_order);
         })
         .catch(console.log);
     };
@@ -66,7 +69,7 @@ const RiderScreen = () => {
           position: "absolute"
         }}
       >
-        <HeaderBar />
+        <HeaderBar navigation={props.navigation}/>
         <MapView
           style={{ flex: 1 }}
           region={{
