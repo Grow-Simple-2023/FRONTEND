@@ -5,6 +5,7 @@ import MapViewDirections from "react-native-maps-directions";
 import MapView from "react-native-maps";
 import style from "./style";
 import { useNavigation } from "@react-navigation/native";
+import BingMapsView from 'react-native-bing-maps';
 import OrderItem from "../../Components/OrderItems";
 import GradientText from "../../Components/GradientText";
 import HeaderBar from "../../Components/HeaderBar";
@@ -67,7 +68,7 @@ const RiderScreen = () => {
         }}
       >
         <HeaderBar />
-        <MapView
+        {/* <MapView
           style={{ flex: 1 }}
           region={{
             latitude: 15.5171,
@@ -79,12 +80,17 @@ const RiderScreen = () => {
           showsMyLocationButton={true}
           userInterfaceStyle={"dark"}
         >
-          {/* <MapViewDirections */}
-          {/*   origin={origin} */}
-          {/*   destination={destination} */}
-          {/*   apikey={"AIzaSyBB2BvPYkpTOl_-dB8VyibUrOQjjz0hv30"} */}
-          {/* /> */}
-        </MapView>
+          <MapViewDirections
+            origin={origin}
+            destination={destination}
+            apikey={"AIzaSyBB2BvPYkpTOl_-dB8VyibUrOQjjz0hv30"}
+          />
+        </MapView> */}
+        <BingMapsView
+          credentialsKey="your_bing_maps_api_key"
+          mapLocation={{ lat: 12.9010875, long: 77.6095084, zoom: 15 }}
+          // style={styles.box}
+        />
       </View>
       <View>
         {/* <View style={style.separatornotch}> */}
