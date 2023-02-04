@@ -52,7 +52,7 @@ const Orders = (props: any) => {
         <ScrollView>
           {orders?.map((order)=>{
             return (
-              <OrderItem name={order.title} rider_no={order.phone_number} />
+              <OrderItem name={order.title} rider_no={order.phone_number}/>
             )
           })}
         </ScrollView>

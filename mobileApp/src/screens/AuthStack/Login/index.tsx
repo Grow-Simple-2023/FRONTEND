@@ -21,6 +21,7 @@ import { apiendpoint } from "../../../constants/apiendpoint";
 const Login = (props: any) => {
   const [username, setUsername] = React.useState("");
   const [password, setPassword] = React.useState("");
+  const [viewpass,setview] = React.useState(false);
 
   const handleSubmit = async () => {
     // var jwt = await AsyncStorage.getItem("@jwtauth");
@@ -82,7 +83,7 @@ const Login = (props: any) => {
             <Image
               source={require("../../../../assets/user.png")}
               style={{
-                margin: 5,
+                margin: 10,
                 resizeMode: "stretch",
                 alignItems: "center"
               }}
@@ -90,6 +91,7 @@ const Login = (props: any) => {
           </View>
           <View style={style.passwordView}>
             <TextInput
+              secureTextEntry={viewpass}
               style={style.passwordinputStyle}
               value={password}
               placeholder="Password"
@@ -98,14 +100,19 @@ const Login = (props: any) => {
               placeholderTextColor={Colors.Text}
               onChangeText={(password) => setPassword(password)}
             />
-            <Image
-              source={require("../../../../assets/password.png")}
-              style={{
-                margin: 5,
-                resizeMode: "stretch",
-                alignItems: "center"
-              }}
-            />
+            <TouchableOpacity
+              onPress={()=>{
+                setview(!viewpass);
+              }}>
+              <Image
+                source={require("../../../../assets/vieweye-light.png")}
+                style={{
+                  margin: 10,
+                  resizeMode: "stretch",
+                  alignItems: "center"
+                }}
+              />
+            </TouchableOpacity>
           </View>
           <TouchableOpacity>
             <Text
