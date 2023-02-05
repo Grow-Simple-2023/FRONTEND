@@ -43,15 +43,17 @@ const Login = (props: any) => {
         else throw new Error("Unauthorized");
       })
       .then((json) => {
-        console.log(JSON.stringify(json, null, 2));
+        //console.log(JSON.stringify(json, null, 2));
         console.log(username);
         const saveData = async () => {
           await AsyncStorage.setItem("@jwtauth", json.token.access_token);
           await AsyncStorage.setItem("userid", String(username));
         };
         saveData();
-        if (json.role === "ADMIN") props.navigation.navigate("AdminTabs");
-        else if (json.role === "RIDER") props.navigation.navigate("Rider");
+        setTimeout(() => {
+          if (json.role === "ADMIN") props.navigation.navigate("AdminTabs");
+          else if (json.role === "RIDER") props.navigation.navigate("Rider");
+        },2000);
       })
       .catch(console.log);
   };

@@ -1,4 +1,4 @@
-import React, { useLayoutEffect, useEffect, useState } from "react";
+import React, { useLayoutEffect, useEffect, useState, useCallback } from "react";
 
 import {
   ScrollView,
@@ -14,7 +14,7 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import MapViewDirections from "react-native-maps-directions";
 import MapView from "react-native-maps";
 import style from "./style";
-import { useNavigation } from "@react-navigation/native";
+import { useFocusEffect, useNavigation } from "@react-navigation/native";
 import OrderItem from "../../../Components/RiderItems";
 import HeaderBar from "../../../Components/HeaderBar";
 import { Colors } from "../../../ref/colors";
@@ -30,7 +30,7 @@ const RiderScreen = (props: any) => {
   const [assign, setassign] = useState(true);
 
   const [modalVisible, setModalVisible] = useState(false);
-  const [OTP,setOTP] = useState('Enter the OTP here');
+  const [OTP,setOTP] = useState('');
 
   const navigation = useNavigation();
   useLayoutEffect(() => {
@@ -43,42 +43,52 @@ const RiderScreen = (props: any) => {
     setModalVisible(true);
   }
 
-  const selectcontainerAction = () => {
+  const submitOTP = () => {
     console.log('selectcontainer');
   }
 
-    const onRefresh = async () => {
-      var phoneNO = await AsyncStorage.getItem("userid");
-      var jwt = await AsyncStorage.getItem("@jwtauth");
-      if (!jwt) jwt = "";
-      console.log(jwt);
-      console.log(phoneNO);
-      fetch(`${apiendpoint}/rider/route/${phoneNO}`, {
-        method: "GET",
-        headers: {
-          "Content-type": "application/json",
-          Credentials: `Bearer ${jwt}`
-        }
+  const onRefresh = async () => {
+    var phoneNO = await AsyncStorage.getItem("userid");
+    var jwt = await AsyncStorage.getItem("@jwtauth");
+    if (!jwt) props.navigation.navigate("Login");
+    // console.log(jwt);
+    // console.log(phoneNO);
+    fetch(`${apiendpoint}/rider/route/${phoneNO}`, {
+      method: "GET",
+      headers: {
+        "Content-type": "application/json",
+        Credentials: `Bearer ${jwt}`
+      }
+    })
+      .then((res: any) => {
+        console.log(res.status);
+        if (res.ok) return res.json();
+        else throw new Error("Unauthorized");
       })
-        .then((res: any) => {
-          console.log(res.status);
-          if (res.ok) return res.json();
-          else throw new Error("Unauthorized");
-        })
-        .then((json: any) => {
-          console.log(JSON.stringify(json, null, 2));
-          if (json.detail) {
-            setassign(false);
-          }
-          setOrders(json.route.items_in_order);
-          setDelivering(json.route.items_in_order[0]);
-        })
-        .catch(console.log);
-    };
+      .then((json: any) => {
+        console.log(JSON.stringify(json, null, 2));
+        if (json.detail) {
+          setassign(false);
+        }
+        setOrders(json.route.items_in_order);
+        setDelivering(json.route.items_in_order[0]);
+      })
+      .catch(console.log);
+  };
 
-  useEffect(() => {
-    onRefresh();
-  }, []);
+  useFocusEffect(
+    useCallback(() => {
+      onRefresh();
+
+      return () => {
+        setOrders([]);
+        setDelivering({});
+        setassign(true);
+        setModalVisible(false);
+        setOTP("");
+      }
+    }, [])
+  );
   
   const backWithRefresh = () => {
     onRefresh();
@@ -142,13 +152,19 @@ const RiderScreen = (props: any) => {
                 <TextInput
                   style={style.OTPinputStyle}
                   value={OTP}
-                  placeholder="SamyC2002"
+                  placeholder="Enter OTP here"
                   cursorColor={Colors.Grad2}
                   selectionColor={"red"}
                   placeholderTextColor={Colors.Theme}
                   onChangeText={(username) => setOTP(OTP)}
                 />
               </View>
+              <TouchableOpacity 
+                style={style.modalclosebutton}
+                onPress={() => submitOTP}
+              >
+                <Text style={style.textStyle}>Submit</Text>
+              </TouchableOpacity>
             </View>
           </View>
         </View>

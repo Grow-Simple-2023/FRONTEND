@@ -1,5 +1,5 @@
-import { useNavigation } from "@react-navigation/native";
-import React, { useEffect, useLayoutEffect, useState } from "react";
+import { useFocusEffect, useNavigation } from "@react-navigation/native";
+import React, { useEffect, useLayoutEffect, useState, useCallback } from "react";
 import { ScrollView, StyleSheet, Text, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import HeaderBar from "../../../Components/HeaderBar";
@@ -25,9 +25,19 @@ const Overview = (props: any) => {
     });
   }, []);
 
-  useEffect(() => {
-    handleSubmit()
-  }, []);
+
+  useFocusEffect(
+    useCallback(() => {
+      handleSubmit()
+
+      return () => {
+        setPerc(0);
+        setItems(0);
+        setjson([]);
+        setUsername("");
+      }
+    }, [])
+  );
 
   const handleSubmit = async () => {
     var jwt = await AsyncStorage.getItem("@jwtauth");
@@ -95,9 +105,12 @@ const Overview = (props: any) => {
         colors={["#AE67F9", "#F1966E"]}>
           <Text style={styles.boxDistText}>{percentage}% Delivered on Time</Text>
         </LinearGradient>
-        <View style={styles.boxTime}>
+        <LinearGradient style={styles.boxTime} 
+        start={{x:0,y:0}}
+        end={{x:1,y:1}}
+        colors={["#AE67F9", "#F1966E"]}>
           <Text style={styles.boxtTimeText}>{items} items in Warehouse</Text>
-        </View>
+        </LinearGradient>
       </View>
       <View style={styles.tablecontainer}>
         <View style={styles.table}>
@@ -137,15 +150,21 @@ const styles = StyleSheet.create({
   boxTime: {
     marginTop: 15,
     width: "100%",
-    borderWidth: 2,
-    borderColor: Colors.Grad1,
-    paddingHorizontal: 28,
-    paddingVertical: 14,
+    // borderWidth: 2,
+    // borderColor: Colors.Grad1,
+    // paddingHorizontal: 28,
+    // paddingVertical: 14,
     borderRadius: 10,
   },
   boxtTimeText: {
     color: Colors.Text,
     fontSize: 30,
+    backgroundColor: Colors.Background,
+    borderRadius: 10,
+    marginHorizontal: 2,
+    marginVertical: 2,
+    paddingHorizontal: 28,
+    paddingVertical: 14
   },
   namePara: {
     color: Colors.Text,

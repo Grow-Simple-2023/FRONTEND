@@ -1,5 +1,5 @@
-import { useNavigation } from "@react-navigation/native";
-import React, { useLayoutEffect, useState, useEffect } from "react";
+import { useNavigation, useFocusEffect } from "@react-navigation/native";
+import React, { useLayoutEffect, useState, useEffect, useCallback } from "react";
 import { ScrollView, StyleSheet, Text, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import HeaderBar from "../../../Components/HeaderBar";
@@ -16,9 +16,15 @@ const Orders = (props: any) => {
       headerShown: false,
     });
   }, []);
-  useEffect(() => {
-    handleSubmit()
-  }, []);
+  useFocusEffect(
+    useCallback(() => {
+      handleSubmit()
+
+      return () => {
+        setOrder([]);
+      }
+    }, [])
+  );
 
   const handleSubmit = async () => {
     var jwt = await AsyncStorage.getItem("@jwtauth");

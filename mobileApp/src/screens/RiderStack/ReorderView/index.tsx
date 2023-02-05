@@ -1,4 +1,4 @@
-import React, { useLayoutEffect, useEffect, useState } from "react";
+import React, { useLayoutEffect, useEffect, useState, useCallback } from "react";
 import {
   ScrollView,
   View,
@@ -30,9 +30,18 @@ const ReorderScreen = (props: any) => {
     });
   }, []);
 
-  useEffect(() => {
-    setOrders(props.route.params.orders);
-  }, []);
+
+  useFocusEffect(
+    useCallback(() => {
+      setOrders(props.route.params.orders || []);
+
+      return () => {
+        setOrders([]);
+        setOrder(-1);
+        setconditions('');
+      }
+    }, [])
+  );
 
   const reorderFunc = async () => {
     var phoneNO = await AsyncStorage.getItem("userid");
