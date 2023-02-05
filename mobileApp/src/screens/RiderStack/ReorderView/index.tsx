@@ -35,14 +35,20 @@ const ReorderScreen = (props: any) => {
     var phoneNO = await AsyncStorage.getItem("userid");
     var jwt = await AsyncStorage.getItem("@jwtauth");
     if (!jwt) jwt = "";
-    console.log(jwt);
-    console.log(phoneNO);
-    fetch(`${apiendpoint}/rider/route/${phoneNO}`, {
-      method: "GET",
+    // console.log(jwt);
+    // console.log(phoneNO);
+    const body = {
+      rider_id: phoneNO,
+      item_ids_in_order: orders.map(order => order.id)
+    };
+    // console.log(JSON.stringify(body, null, 2));
+    fetch(`${apiendpoint}/rider/modify-route`, {
+      method: "POST",
       headers: {
         "Content-type": "application/json",
         Credentials: `Bearer ${jwt}`
-      }
+      },
+      body: JSON.stringify(body)
     })
       .then((res: any) => {
         console.log(res.status);
@@ -51,6 +57,7 @@ const ReorderScreen = (props: any) => {
       })
       .then((json: any) => {
         console.log(JSON.stringify(json, null, 2));
+        props.route.params.backWithRefresh();
       })
       .catch(console.log);
   };
@@ -78,9 +85,10 @@ const ReorderScreen = (props: any) => {
     <SafeAreaView style={style.container}>
       <HeaderBar navigation={props.navigation} />
       <ScrollView>
-        {orders?.map((order: any) => {
+        {orders?.map((order: any, id: number) => {
           return (
             <TouchableOpacity
+              key={id}
               onPress={() =>
                 setOrder((prevState) =>
                   prevState === order.id ? -1 : order.id

@@ -41,8 +41,7 @@ const RiderScreen = (props: any) => {
     setModalVisible(true);
   }
 
-  useEffect(() => {
-    const func = async () => {
+    const onRefresh = async () => {
       var phoneNO = await AsyncStorage.getItem("userid");
       var jwt = await AsyncStorage.getItem("@jwtauth");
       if (!jwt) jwt = "";
@@ -70,8 +69,14 @@ const RiderScreen = (props: any) => {
         })
         .catch(console.log);
     };
-    func();
+
+  useEffect(() => {
+    onRefresh();
   }, []);
+  
+  const backWithRefresh = () => {
+    onRefresh();
+  }
 
   return (
     <SafeAreaView style={style.container}>
@@ -144,7 +149,7 @@ const RiderScreen = (props: any) => {
       </Modal>
     </View>
       <TouchableOpacity
-        onPress={() => props.navigation.navigate("Reorder", { orders })}
+        onPress={() => props.navigation.navigate("Reorder", { orders, backWithRefresh })}
         style={{
           backgroundColor: Colors.Background,
           padding: 10,
