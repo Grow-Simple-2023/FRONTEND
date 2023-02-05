@@ -32,8 +32,7 @@ const RiderScreen = (props: any) => {
     });
   }, []);
 
-  useEffect(() => {
-    const func = async () => {
+    const onRefresh = async () => {
       var phoneNO = await AsyncStorage.getItem("userid");
       var jwt = await AsyncStorage.getItem("@jwtauth");
       if (!jwt) jwt = "";
@@ -61,11 +60,13 @@ const RiderScreen = (props: any) => {
         })
         .catch(console.log);
     };
-    func();
+
+  useEffect(() => {
+    onRefresh();
   }, []);
   
   const backWithRefresh = () => {
-    
+    onRefresh();
   }
 
   return (
