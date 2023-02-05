@@ -63,6 +63,10 @@ const RiderScreen = (props: any) => {
     };
     func();
   }, []);
+  
+  const backWithRefresh = () => {
+    
+  }
 
   return (
     <SafeAreaView style={style.container}>
@@ -103,7 +107,7 @@ const RiderScreen = (props: any) => {
         /> */}
       </View>
       <TouchableOpacity
-        onPress={() => props.navigation.navigate("Reorder", { orders })}
+        onPress={() => props.navigation.navigate("Reorder", { orders, backWithRefresh })}
         style={{
           backgroundColor: Colors.Background,
           padding: 10,

@@ -36,22 +36,26 @@ const ReorderScreen = (props: any) => {
     if (!jwt) jwt = "";
     console.log(jwt);
     console.log(phoneNO);
-    fetch(`${apiendpoint}/rider/route/${phoneNO}`, {
-      method: "GET",
-      headers: {
-        "Content-type": "application/json",
-        Credentials: `Bearer ${jwt}`
-      }
-    })
-      .then((res: any) => {
-        console.log(res.status);
-        if (res.ok) return res.json();
-        else throw new Error("Unauthorized");
-      })
-      .then((json: any) => {
-        console.log(JSON.stringify(json, null, 2));
-      })
-      .catch(console.log);
+    const body = orders.map(order => order.id);
+    console.log(JSON.stringify(body, null, 2));
+    // fetch(`${apiendpoint}/rider/modify-route?rider_id=${phoneNO}`, {
+    //   method: "PUT",
+    //   headers: {
+    //     "Content-type": "application/json",
+    //     Credentials: `Bearer ${jwt}`
+    //   },
+    //   body: JSON.stringify(body)
+    // })
+    //   .then((res: any) => {
+    //     console.log(res.status);
+    //     if (res.ok) return res.json();
+    //     else throw new Error("Unauthorized");
+    //   })
+    //   .then((json: any) => {
+    //     console.log(JSON.stringify(json, null, 2));
+    //     props.route.params.backWithRefresh();
+    //   })
+    //   .catch(console.log);
   };
 
   const swapElements = (index1: number, index2: number) => {
@@ -77,9 +81,10 @@ const ReorderScreen = (props: any) => {
     <SafeAreaView style={style.container}>
       <HeaderBar navigation={props.navigation} />
       <ScrollView>
-        {orders?.map((order: any) => {
+        {orders?.map((order: any, id: number) => {
           return (
             <TouchableOpacity
+              key={id}
               onPress={() =>
                 setOrder((prevState) =>
                   prevState === order.id ? -1 : order.id
