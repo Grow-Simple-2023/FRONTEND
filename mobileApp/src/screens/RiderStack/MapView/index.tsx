@@ -1,5 +1,5 @@
 import React, { useLayoutEffect, useEffect, useState, useCallback } from "react";
-
+import Checkbox from 'expo-checkbox';
 import {
   ScrollView,
   View,
@@ -31,6 +31,7 @@ const RiderScreen = (props: any) => {
 
   const [modalVisible, setModalVisible] = useState(false);
   const [OTP,setOTP] = useState('');
+  const [isDelivered, setDelivered] = useState(false);
 
   const navigation = useNavigation();
   useLayoutEffect(() => {
@@ -43,8 +44,35 @@ const RiderScreen = (props: any) => {
     setModalVisible(true);
   }
 
-  const submitOTP = () => {
+  const submitOTP = async () => {
     console.log('selectcontainer');
+    var phoneNO = await AsyncStorage.getItem("userid");
+    var jwt = await AsyncStorage.getItem("@jwtauth");
+    var OTP_no = Number(OTP);
+    if (!jwt) props.navigation.navigate("Login");
+    // console.log(jwt);
+    // console.log(phoneNO);
+    fetch(`${apiendpoint}/rider/route/item-status-update`, {
+      method: "POST",
+      headers: {
+        "Content-type": "application/json",
+        Credentials: `Bearer ${jwt}`
+      },
+      body: JSON.stringify({
+        item_id: delivering,
+        status: ((isDelivered==false)?0:1),
+        OTP: OTP_no,
+      })
+    })
+      .then((res: any) => {
+        console.log(res.status);
+        if (res.ok) return res.json();
+        else throw new Error("Unauthorized");
+      })
+      .then((json: any) => {
+        console.log(JSON.stringify(json, null, 2));
+      })
+      .catch(console.log);
   }
 
   const onRefresh = async () => {
@@ -86,6 +114,7 @@ const RiderScreen = (props: any) => {
         setassign(true);
         setModalVisible(false);
         setOTP("");
+        setDelivered(false);
       }
     }, [])
   );
@@ -158,6 +187,10 @@ const RiderScreen = (props: any) => {
                   placeholderTextColor={Colors.Theme}
                   onChangeText={(username) => setOTP(OTP)}
                 />
+              </View>
+              <View style={{flexDirection: 'row',alignItems: 'center'}}>
+                <Checkbox style={{padding: 10,}}value={isDelivered} onValueChange={setDelivered}/>
+                <Text style={style.textStyle}>Item Delivered</Text>
               </View>
               <TouchableOpacity 
                 style={style.modalclosebutton}
