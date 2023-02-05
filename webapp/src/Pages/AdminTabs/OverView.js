@@ -14,7 +14,43 @@ const OverView = (props) => {
   const [username, setUsername] = useState("Samy");
   const [percentage, setPerc] = useState(0);
 
+  const tableData = [
+    {
+      item: "item A",
+      address:
+        "Address A, 123 Street Address A, 123 Street Address A, 123 Street",
+      edd: "tomorrow",
+      rider: "Shyam Charan",
+    },
+    {
+      item: "item A",
+      address:
+        "Address A, 123 Street Address A, 123 Street Address A, 123 Street",
+      edd: "tomorrow",
+      rider: "Shyam Charan",
+    },
+    {
+      item: "item A",
+      address: "Address A, 123 Street",
+      edd: "today",
+      rider: "Shyam Charan",
+    },
+    {
+      item: "item A",
+      address: "Address A, 123 Street",
+      edd: "today",
+      rider: "Shyam Charan",
+    },
+    {
+      item: "item A",
+      address: "Address A, 123 Street",
+      edd: "today",
+      rider: "Shyam Charan",
+    },
+  ];
+
   const [item, setItem] = useState("obj_demo");
+  const [items, setItems] = useState([]);
   const [address, setAddress] = useState("address_demo");
   const [edd, setEdd] = useState("edd_demo");
   const [rider, setRider] = useState(0);
@@ -80,42 +116,25 @@ const OverView = (props) => {
         //saveData();
       })
       .catch(console.log);
+    fetch(`${apiendpoint}/manager/unassigned-items`, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        Credentials: `Bearer ${jwt}`,
+      },
+    })
+      .then((res) => {
+        console.log(res.status);
+        if (res.ok == true) return res.json();
+        else throw new Error("Unauthorized");
+      })
+      .then((json) => {
+        console.log(JSON.stringify(json, null, 2));
+        setItems(json.unassigned_items);
+      })
+      .catch(console.log);
   };
 
-  const tableData = [
-    {
-      item: "item A",
-      address:
-        "Address A, 123 Street Address A, 123 Street Address A, 123 Street",
-      edd: "tomorrow",
-      rider: "Shyam Charan",
-    },
-    {
-      item: "item A",
-      address:
-        "Address A, 123 Street Address A, 123 Street Address A, 123 Street",
-      edd: "tomorrow",
-      rider: "Shyam Charan",
-    },
-    {
-      item: "item A",
-      address: "Address A, 123 Street",
-      edd: "today",
-      rider: "Shyam Charan",
-    },
-    {
-      item: "item A",
-      address: "Address A, 123 Street",
-      edd: "today",
-      rider: "Shyam Charan",
-    },
-    {
-      item: "item A",
-      address: "Address A, 123 Street",
-      edd: "today",
-      rider: "Shyam Charan",
-    },
-  ];
   return (
     <div className={classes.overveiw}>
       <div className={classes.welcome} style={{ margin: "2rem" }}>
@@ -156,7 +175,7 @@ const OverView = (props) => {
             md={6}
           >
             <div className={classes.time}>
-              <h1>X% delivered on Time</h1>
+              <h1>{percentage} % delivered on Time</h1>
             </div>
           </Grid>
         </Grid>
@@ -175,18 +194,20 @@ const OverView = (props) => {
               </TableRow>
             </TableHead>
             <TableBody>
-              {tableData.map((row, index) => (
+              {items.map((row, index) => (
                 <TableRow
                   style={{ borderBottom: "1.5px solid black" }}
                   key={index}
                 >
-                  <TableCell className={classes.bodyCell}>{row.item}</TableCell>
+                  <TableCell className={classes.bodyCell}>
+                    {row.title}
+                  </TableCell>
                   <TableCell className={classes.bodyCell}>
                     {row.address}
                   </TableCell>
-                  <TableCell className={classes.bodyCell}>{row.edd}</TableCell>
+                  <TableCell className={classes.bodyCell}>{row.EDD}</TableCell>
                   <TableCell className={classes.bodyCell}>
-                    {row.rider}
+                    {row.phone_number}
                   </TableCell>
                 </TableRow>
               ))}

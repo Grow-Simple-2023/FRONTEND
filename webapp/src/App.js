@@ -8,6 +8,7 @@ import Form from "./components/Form";
 import { useLocation } from "react-router-dom";
 import Login from "./Pages/AuthStack/Login";
 import Signup from "./Pages/AuthStack/Signup";
+import Index from "./Pages/RiderStack/Index";
 
 function App() {
   let location = useLocation();
