@@ -3,7 +3,7 @@ import React, { useEffect, useState } from "react";
 import { Colors } from "../ref/colors";
 
 
-const AdminTable = (props) => {
+const AdminTable = (props: any) => {
   const data = props.data;
   return (
     <ScrollView>
@@ -14,7 +14,7 @@ const AdminTable = (props) => {
             {data.map((data, index) => {
               return (
                 <Text style={styles.entry} key={index}>
-                  {data.item}
+                  {data.title}
                 </Text>
               );
             })}
@@ -41,7 +41,7 @@ const AdminTable = (props) => {
             {data.map((data, index) => {
               return (
                 <Text style={styles.entry} key={index}>
-                  {data.edd}
+                  {data.EDD}
                 </Text>
               );
             })}
@@ -53,7 +53,7 @@ const AdminTable = (props) => {
             {data.map((data, index) => {
               return (
                 <Text style={styles.entry} key={index}>
-                  {data.rider}
+                  {data.phone_number}
                 </Text>
               );
             })}
@@ -65,6 +65,7 @@ const AdminTable = (props) => {
 };
 
 const styles = StyleSheet.create({
+  content: {},
   container: {
     flex: 1,
     // marginVertical: 10,
@@ -93,7 +94,7 @@ const styles = StyleSheet.create({
     width: 70,
   },
   riders: {
-    width: 70,
+    width: 80,
   },
   head: {
     // paddingHorizontal: 5,

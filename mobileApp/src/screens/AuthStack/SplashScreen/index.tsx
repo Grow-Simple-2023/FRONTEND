@@ -58,16 +58,19 @@ const SplashScreen = (props: any) => {
       setTimeout(() => {
         setSplash(true);
       }, 5000);
-    }, [])
-  );
-
-  useFocusEffect(
-    React.useCallback(() => {
       if (apiLoaded && fontsLoaded && route !== "" && splashLoaded) {
         props.navigation.navigate(route);
       }
     }, [apiLoaded, fontsLoaded, route, splashLoaded])
   );
+
+  // useFocusEffect(
+  //   React.useCallback(() => {
+  //     if (apiLoaded && fontsLoaded && route !== "" && splashLoaded) {
+  //       props.navigation.navigate(route);
+  //     }
+  //   }, [apiLoaded, fontsLoaded, route, splashLoaded])
+  // );
 
   return (
     <SafeAreaView style={style.container}>

@@ -14,6 +14,7 @@ import { apiendpoint } from "../../../constants/apiendpoint";
 const SignUp = (props: any) => {
   const [username, setUsername] = React.useState('');
   const [password, setPassword] = React.useState('');
+  const [viewpass,setview] = React.useState(false);
 
   const [fontsLoaded] = useFonts({
     'Rubik': require('../../../../assets/font/Rubik/static/Rubik-Medium.ttf'),
@@ -86,7 +87,7 @@ const SignUp = (props: any) => {
                   <Image
                     source={require('../../../../assets/user.png')}
                     style={{
-                      margin: 5,
+                      margin: 10,
                       resizeMode: 'stretch',
                       alignItems: 'center',
                     }}
@@ -94,6 +95,7 @@ const SignUp = (props: any) => {
                 </View>
                 <View style={style.passwordView}>
                   <TextInput
+                    secureTextEntry={viewpass}
                     style={style.passwordinputStyle}
                     value={password}
                     placeholder="Password"
@@ -102,14 +104,20 @@ const SignUp = (props: any) => {
                     placeholderTextColor={Colors.Text}
                     onChangeText={password => setPassword(password)}
                   />
-                  <Image
-                    source={require('../../../../assets/password.png')}
-                    style={{
-                      margin: 5,
-                      resizeMode: 'stretch',
-                      alignItems: 'center',
-                    }}
-                  />
+
+                  <TouchableOpacity
+                    onPress={()=>{
+                      setview(!viewpass);
+                    }}>
+                    <Image
+                      source={require("../../../../assets/vieweye-light.png")}
+                      style={{
+                        margin: 10,
+                        resizeMode: "stretch",
+                        alignItems: "center"
+                      }}
+                    />
+                  </TouchableOpacity>
                 </View>
               </View>
               <View style={style.bottomContainer}>

@@ -64,12 +64,12 @@ const Orders = () => {
 
   return (
     <div className={classes.orders}>
-      {unassignedOrders.map((rider, index) => {
+      {unassignedOrders?.map((rider, index) => {
         return (
           <div key={index}>
-            <p className={classes.riderName}>Rider {rider.rider_id}</p>
+            <p className={classes.riderName}>Rider {rider?.rider_id}</p>
             <div className={classes.riderOrders}>
-              {rider?.items_in_order.map((order, index) => {
+              {rider?.items_in_order?.map((order, index) => {
                 return (
                   <OrderItem
                     key={index}
