@@ -14,74 +14,6 @@ const OverView = (props) => {
   const [username, setUsername] = useState("Samy");
   const [percentage, setPerc] = useState(0);
 
-  const [item, setItem] = useState("obj_demo");
-  const [address, setAddress] = useState("address_demo");
-  const [edd, setEdd] = useState("edd_demo");
-  const [rider, setRider] = useState(0);
-
-  console.log("data is ");
-  console.log({ username, percentage, item, address, edd, rider });
-
-  useEffect(() => {
-    handleSubmit();
-  }, []);
-
-  const handleSubmit = async () => {
-    var jwt = await localStorage.getItem("@jwtauth");
-    var user = await localStorage.getItem("userid");
-    if (!user) user = "Samy";
-    if (!jwt) jwt = "";
-    console.log(jwt);
-    console.log(user);
-    setUsername(user);
-    fetch(`${apiendpoint}/manager/OTD-percentage`, {
-      method: "GET",
-      headers: {
-        "Content-Type": "application/json",
-        Credentials: `Bearer ${jwt}`,
-      },
-    })
-      .then((res) => {
-        console.log(res.status);
-        if (res.ok == true) return res.json();
-        else throw new Error("Unauthorized");
-      })
-      .then((json) => {
-        setPerc(json.percentage);
-        // const saveData = async () => {
-        //   await AsyncStorage.setItem("@jwtauth", json.auth.access_token);
-        //   await AsyncStorage.setItem("@role", json.user.role);
-        // }
-        //saveData();
-      })
-      .catch(console.log);
-    fetch(`${apiendpoint}/manager/items/object1`, {
-      method: "GET",
-      headers: {
-        "Content-Type": "application/json",
-        Credentials: `Bearer ${jwt}`,
-      },
-    })
-      .then((res) => {
-        console.log(res.status);
-        if (res.ok == true) return res.json();
-        else throw new Error("Unauthorized");
-      })
-      .then((json) => {
-        console.log(JSON.stringify(json, null, 2));
-        setItem(json.item.title);
-        setAddress(json.item.address);
-        setEdd(json.item.EDD);
-        setRider(json.item.phone_number);
-        // const saveData = async () => {
-        //   await AsyncStorage.setItem("@jwtauth", json.auth.access_token);
-        //   await AsyncStorage.setItem("@role", json.user.role);
-        // }
-        //saveData();
-      })
-      .catch(console.log);
-  };
-
   const tableData = [
     {
       item: "item A",
@@ -116,6 +48,56 @@ const OverView = (props) => {
       rider: "Shyam Charan",
     },
   ];
+
+  const [items, setItems] = useState([]);
+
+  useEffect(() => {
+    handleSubmit();
+  }, []);
+
+  const handleSubmit = async () => {
+    var jwt = await localStorage.getItem("@jwtauth");
+    var user = await localStorage.getItem("userid");
+    if (!user) user = "Samy";
+    if (!jwt) jwt = "";
+    console.log(jwt);
+    console.log(user);
+    setUsername(user);
+    fetch(`${apiendpoint}/manager/OTD-percentage`, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        Credentials: `Bearer ${jwt}`,
+      },
+    })
+      .then((res) => {
+        console.log(res.status);
+        if (res.ok) return res.json();
+        else throw new Error("Unauthorized");
+      })
+      .then((json) => {
+        setPerc(json.percentage);
+      })
+      .catch(console.log);
+    fetch(`${apiendpoint}/manager/unassigned-items`, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        Credentials: `Bearer ${jwt}`,
+      },
+    })
+      .then((res) => {
+        console.log(res.status);
+        if (res.ok) return res.json();
+        else throw new Error("Unauthorized");
+      })
+      .then((json) => {
+        console.log(JSON.stringify(json, null, 2));
+        setItems(json.unassigned_items);
+      })
+      .catch(console.log);
+  };
+
   return (
     <div className={classes.overveiw}>
       <div className={classes.welcome} style={{ margin: "2rem" }}>
@@ -126,10 +108,10 @@ const OverView = (props) => {
       <main className={classes.distTime}>
         <Grid
           container
-          direction="row"
-          justifyContent="center"
-          alignItems="center"
-          spacing={3}
+          // direction="row"
+          // justifyContent="center"
+          // alignItems="center"
+          // spacing={3}
         >
           <Grid
             container
@@ -142,7 +124,7 @@ const OverView = (props) => {
             md={6}
           >
             <div className={classes.dist}>
-              <h1>X km Distance Travelled</h1>
+              <h1>{percentage} % delivered on Time</h1>
             </div>
           </Grid>
           <Grid
@@ -156,7 +138,7 @@ const OverView = (props) => {
             md={6}
           >
             <div className={classes.time}>
-              <h1>X% delivered on Time</h1>
+              <h1>{items.length} items in Warehouse</h1>
             </div>
           </Grid>
         </Grid>
@@ -168,25 +150,27 @@ const OverView = (props) => {
               <TableRow>
                 <TableCell className={classes.headCell}>Items</TableCell>
                 <TableCell className={classes.headCell}>Address</TableCell>
-                <TableCell className={classes.headCell}>EDD&nbsp;(g)</TableCell>
+                <TableCell className={classes.headCell}>EDD</TableCell>
                 <TableCell className={classes.headCell}>
-                  Rider&nbsp;(g)
+                  Rider
                 </TableCell>
               </TableRow>
             </TableHead>
             <TableBody>
-              {tableData.map((row, index) => (
+              {items.map((row, index) => (
                 <TableRow
                   style={{ borderBottom: "1.5px solid black" }}
                   key={index}
                 >
-                  <TableCell className={classes.bodyCell}>{row.item}</TableCell>
+                  <TableCell className={classes.bodyCell}>
+                    {row.title}
+                  </TableCell>
                   <TableCell className={classes.bodyCell}>
                     {row.address}
                   </TableCell>
-                  <TableCell className={classes.bodyCell}>{row.edd}</TableCell>
+                  <TableCell className={classes.bodyCell}>{row.EDD}</TableCell>
                   <TableCell className={classes.bodyCell}>
-                    {row.rider}
+                    {row.phone_number}
                   </TableCell>
                 </TableRow>
               ))}

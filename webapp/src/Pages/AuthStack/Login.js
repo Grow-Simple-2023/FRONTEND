@@ -36,7 +36,7 @@ const Login = () => {
         };
         saveData();
         console.log("role is " + json.role);
-        if (json.role == "ADMIN") {
+        if (json.role === "ADMIN") {
           navigate("/overview");
         } else if (json.role === "RIDER") {
           alert("Rider");
