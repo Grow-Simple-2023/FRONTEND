@@ -21,7 +21,7 @@ import { apiendpoint } from "../../../constants/apiendpoint";
 const Login = (props: any) => {
   const [username, setUsername] = React.useState("");
   const [password, setPassword] = React.useState("");
-  const [viewpass,setview] = React.useState(false);
+  const [viewpass,setview] = React.useState(true);
 
   const handleSubmit = async () => {
     // var jwt = await AsyncStorage.getItem("@jwtauth");
@@ -115,7 +115,7 @@ const Login = (props: any) => {
             </TouchableOpacity>
           </View>
           <TouchableOpacity>
-            <Text
+            {/* <Text
               style={[
                 style.LinkText,
                 {
@@ -128,7 +128,7 @@ const Login = (props: any) => {
               ]}
             >
               Forgot Password?
-            </Text>
+            </Text> */}
           </TouchableOpacity>
         </View>
         <View style={style.bottomContainer}>

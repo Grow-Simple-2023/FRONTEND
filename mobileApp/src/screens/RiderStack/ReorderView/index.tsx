@@ -15,10 +15,13 @@ import HeaderBar from "../../../Components/HeaderBar";
 import { Colors } from "../../../ref/colors";
 import { apiendpoint } from "../../../constants/apiendpoint";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import GradientText from "../../../Components/GradientText";
 
 const ReorderScreen = (props: any) => {
   const [orders, setOrders] = useState([]);
   const [order, setOrder] = useState(-1);
+
+  const [condition,setconditions] = useState('');
 
   const navigation = useNavigation();
   useLayoutEffect(() => {
@@ -89,10 +92,12 @@ const ReorderScreen = (props: any) => {
           return (
             <TouchableOpacity
               key={id}
-              onPress={() =>
+              onPress={() => {
                 setOrder((prevState) =>
                   prevState === order.id ? -1 : order.id
-                )
+                );
+                setconditions(order.title);
+              }
               }
             >
               <OrderItem
@@ -118,41 +123,46 @@ const ReorderScreen = (props: any) => {
         <Text style={{ color: Colors.Text }}>Reorder</Text>
       </TouchableOpacity>
       {order !== -1 && (
-        <View>
-          <Text style={{ color: Colors.Text, textAlign: "center" }}>
-            Shift {orders.filter((ord) => ord.id === order)[0].title} ?
-          </Text>
+        <View style={{paddingTop:20}}>
+          <GradientText text={
+          <Text>
+            Shift {condition} ?
+          </Text>}
+          style={{ textAlign: "center" , display:'flex',justifyContent: 'center'}}
+          />
           <View
             style={{
               display: "flex",
               flexDirection: "row",
-              justifyContent: "space-evenly",
-              width: Dimensions.get("screen").width,
-              padding: 20
+              justifyContent: "space-between",
+              width: Dimensions.get("screen").width*0.8,
+              padding: 20,
             }}
           >
             <TouchableOpacity
               style={{
                 padding: 10,
                 borderRadius: 10,
-                backgroundColor: Colors.Accent
+                borderColor: Colors.Accent,
+                borderWidth: 1,
               }}
               onPress={shiftUp}
             >
               <Image
-                source={require("../../../../assets/icons-up.svg")}
+                source={require("../../../../assets/icons-up.png")}
               />
             </TouchableOpacity>
             <TouchableOpacity
               style={{
                 padding: 10,
                 borderRadius: 10,
-                backgroundColor: Colors.Accent
+                borderColor: Colors.Accent,
+                borderWidth: 1,
               }}
               onPress={shiftDown}
             >
               <Image
-                source={require("../../../../assets/icons-down.svg")}
+                source={require("../../../../assets/icons-down.png")}
               />
             </TouchableOpacity>
           </View>

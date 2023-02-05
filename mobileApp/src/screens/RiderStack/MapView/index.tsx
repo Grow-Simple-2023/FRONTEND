@@ -1,4 +1,5 @@
 import React, { useLayoutEffect, useEffect, useState } from "react";
+
 import {
   ScrollView,
   View,
@@ -6,7 +7,8 @@ import {
   Text,
   TouchableOpacity,
   Modal,
-  TextInput
+  TextInput,
+  Image
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import MapViewDirections from "react-native-maps-directions";
@@ -39,6 +41,10 @@ const RiderScreen = (props: any) => {
 
   const showModalfn = () => {
     setModalVisible(true);
+  }
+
+  const selectcontainerAction = () => {
+    console.log('selectcontainer');
   }
 
     const onRefresh = async () => {
@@ -152,11 +158,17 @@ const RiderScreen = (props: any) => {
         onPress={() => props.navigation.navigate("Reorder", { orders, backWithRefresh })}
         style={{
           backgroundColor: Colors.Background,
-          padding: 10,
-          borderRadius: 10
+          padding: 15,
+          borderRadius: 15,
+          justifyContent:'flex-end',
+          flexDirection:'row',
+          elevation:10,
         }}
       >
-        <Text style={{ color: Colors.Theme }}>Reorder</Text>
+        <Image
+          source={require("../../../../assets/reorder-icon.png")}
+         />
+        <Text style={{ color: Colors.Theme, fontFamily:'Rubik', fontSize:16 , padding: 5 }}>Reorder</Text>
       </TouchableOpacity>
       <View>
         {!assign ? (
@@ -188,6 +200,7 @@ const RiderScreen = (props: any) => {
                   setDelivering={setDelivering}
                   order={order}
                   showModal={() => showModalfn()}
+                  // selectcontainerAction = {() => selectcontainerAction()}
                 />
               );
             })}

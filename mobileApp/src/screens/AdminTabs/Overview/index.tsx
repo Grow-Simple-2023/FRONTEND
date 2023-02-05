@@ -14,6 +14,7 @@ const Overview = (props: any) => {
 
   const [username, setUsername] = useState('Samy');
   const [percentage, setPerc] = useState(0);
+  const [items,setItems] = useState(0);
 
   const [json, setjson] = useState([]);
 
@@ -67,6 +68,7 @@ const Overview = (props: any) => {
       else throw new Error("Unauthorized");
     }).then(json => {
       setjson(json.unassigned_items);
+      setItems(json.unassigned_items.length);
       // setItem(json.item.title);
       // setAddress(json.item.address);
       // setEdd(json.item.EDD);
@@ -91,10 +93,10 @@ const Overview = (props: any) => {
         start={{x:0,y:0}}
         end={{x:1,y:1}}
         colors={["#AE67F9", "#F1966E"]}>
-          <Text style={styles.boxDistText}>X Km Distance Travelled</Text>
+          <Text style={styles.boxDistText}>{percentage}% Delivered on Time</Text>
         </LinearGradient>
         <View style={styles.boxTime}>
-          <Text style={styles.boxtTimeText}>{percentage}% Delivered on Time</Text>
+          <Text style={styles.boxtTimeText}>{items} items in Warehouse</Text>
         </View>
       </View>
       <View style={styles.tablecontainer}>
