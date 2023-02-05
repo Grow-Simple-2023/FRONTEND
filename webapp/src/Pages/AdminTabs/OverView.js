@@ -1,4 +1,4 @@
-import React, { Fragment } from "react";
+import React, { Fragment, useEffect, useState } from "react";
 import classes from "./Overview.module.css";
 import Grid from "@material-ui/core/Grid";
 import Table from "@material-ui/core/Table";
@@ -8,8 +8,80 @@ import TableContainer from "@material-ui/core/TableContainer";
 import TableHead from "@material-ui/core/TableHead";
 import TableRow from "@material-ui/core/TableRow";
 import Paper from "@material-ui/core/Paper";
+import { apiendpoint } from "../../constants/constans";
 
-const OverView = () => {
+const OverView = (props) => {
+  const [username, setUsername] = useState("Samy");
+  const [percentage, setPerc] = useState(0);
+
+  const [item, setItem] = useState("obj_demo");
+  const [address, setAddress] = useState("address_demo");
+  const [edd, setEdd] = useState("edd_demo");
+  const [rider, setRider] = useState(0);
+
+  console.log("data is ");
+  console.log({ username, percentage, item, address, edd, rider });
+
+  useEffect(() => {
+    handleSubmit();
+  }, []);
+
+  const handleSubmit = async () => {
+    var jwt = await localStorage.getItem("@jwtauth");
+    var user = await localStorage.getItem("userid");
+    if (!user) user = "Samy";
+    if (!jwt) jwt = "";
+    console.log(jwt);
+    console.log(user);
+    setUsername(user);
+    fetch(`${apiendpoint}/manager/OTD-percentage`, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        Credentials: `Bearer ${jwt}`,
+      },
+    })
+      .then((res) => {
+        console.log(res.status);
+        if (res.ok == true) return res.json();
+        else throw new Error("Unauthorized");
+      })
+      .then((json) => {
+        setPerc(json.percentage);
+        // const saveData = async () => {
+        //   await AsyncStorage.setItem("@jwtauth", json.auth.access_token);
+        //   await AsyncStorage.setItem("@role", json.user.role);
+        // }
+        //saveData();
+      })
+      .catch(console.log);
+    fetch(`${apiendpoint}/manager/items/object1`, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        Credentials: `Bearer ${jwt}`,
+      },
+    })
+      .then((res) => {
+        console.log(res.status);
+        if (res.ok == true) return res.json();
+        else throw new Error("Unauthorized");
+      })
+      .then((json) => {
+        console.log(JSON.stringify(json, null, 2));
+        setItem(json.item.title);
+        setAddress(json.item.address);
+        setEdd(json.item.EDD);
+        setRider(json.item.phone_number);
+        // const saveData = async () => {
+        //   await AsyncStorage.setItem("@jwtauth", json.auth.access_token);
+        //   await AsyncStorage.setItem("@role", json.user.role);
+        // }
+        //saveData();
+      })
+      .catch(console.log);
+  };
+
   const tableData = [
     {
       item: "item A",
@@ -46,6 +118,11 @@ const OverView = () => {
   ];
   return (
     <div className={classes.overveiw}>
+      <div className={classes.welcome} style={{ margin: "2rem" }}>
+        <p style={{ fontSize: "1.5rem" }}>Welcome, {username}</p>
+        <p style={{ padding: "1rem 2rem" }}>Get a look at the deliveries</p>
+      </div>
+
       <main className={classes.distTime}>
         <Grid
           container
