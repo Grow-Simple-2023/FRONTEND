@@ -1,17 +1,31 @@
-import { View, StyleSheet, Image } from 'react-native'
+import { View, StyleSheet, Image, TouchableOpacity } from 'react-native'
 import React from 'react'
 import { Colors } from '../ref/colors'
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
-const HeaderBar = () => {
+const HeaderBar = (props: any) => {
+
+  const logout = async () => {
+    await AsyncStorage.clear();
+  };
   return (
-    <View style={styles.container}>
+    <TouchableOpacity 
+      style = {styles.container}
+      onPress = { () => {
+        logout().then(() =>
+          {
+            props.navigation.navigate("SplashScreen");
+          }
+        ).catch(console.log);
+        }}>
         <Image
           style={styles.profImg}
           source={{ uri: "https://wallpapers.com/images/featured/4co57dtwk64fb7lv.jpg" }}
         />
-    </View>
+    </TouchableOpacity>
   )
 }
+
 const styles = StyleSheet.create({
     container: {
         padding: 10,

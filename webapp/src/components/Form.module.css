@@ -1,0 +1,107 @@
+.form {
+  color: white;
+  margin: 0 auto;
+  width: 40rem;
+  height: 25rem;
+  background-color: rgb(26, 33, 43);
+  border-radius: 3rem;
+  padding: 2rem;
+  margin-top: 10%;
+}
+
+.inputFields {
+  margin-top: 3rem;
+}
+.input {
+  width: 100%;
+  height: 3rem;
+  margin: 1rem 0;
+  border-radius: 5rem;
+  border: 2px solid white;
+  padding: 0 2rem;
+  font-size: larger;
+  background-color: rgb(26, 33, 43) !important;
+}
+.username {
+  position: relative;
+  background-color: rgb(26, 33, 43);
+}
+.icon {
+  position: absolute;
+  top: 32%;
+  right: 4%;
+  z-index: 10;
+  color: white;
+}
+.password {
+  position: relative;
+  background-color: rgb(26, 33, 43);
+}
+.icon {
+  position: absolute;
+  top: 32%;
+  right: 4%;
+  z-index: 10;
+  color: white;
+}
+.focus {
+  border: 2px solid #81afdd !important;
+  color: #81afdd !important;
+}
+.iconFocus {
+  color: #81afdd !important;
+}
+.forgetPass {
+  color: #81afdd;
+  text-align: end;
+  text-decoration: underline;
+}
+.footer {
+  margin-top: 3rem;
+
+}
+.btmSignUp {
+  color: white;
+  font-size: 1rem;
+  background: none;
+  border: none;
+  text-decoration: underline;
+}
+.btmSignUp:hover {
+  cursor: pointer;
+}
+.btn {
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  margin: 0 auto;
+  text-align: center;
+  width: 10rem;
+  background-color: #ff4820;
+  padding: 0.5rem 1.5rem;
+  border-radius: 2rem;
+}
+.btn button {
+  color: white;
+  font-size: 1rem;
+  background: none;
+  border: none;
+}
+.btn:hover {
+  cursor: pointer;
+}
+.btn button:hover{
+    cursor: pointer;
+}
+@media only screen and (max-width: 600px) {
+  .form {
+    width: 90%;
+    /* height: 15rem; */
+    margin-top: 30%;
+    padding: 2rem 1rem;
+  }
+}
+
+.active {
+  color: #ff4820 !important;
+}

@@ -1,0 +1,23 @@
+.orders{
+    color: white !important;
+}
+.riderName{
+    color: #81AFDD;
+    font-size: 1.8rem;
+    margin-left: 1rem;
+}
+.riderOrders{
+    display: flex;
+    flex-wrap: wrap;
+    margin-bottom: 4rem;
+    margin-left: 1rem;
+}
+
+@media only screen and (max-width: 600px){
+    .riderOrders{
+        justify-content: center;
+    }
+    .riderName{
+        text-align: center;
+    }
+}

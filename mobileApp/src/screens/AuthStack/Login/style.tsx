@@ -60,7 +60,7 @@ const style = StyleSheet.create({
     },
     usernameinputStyle: {
         flex:1,
-        color: Colors.Text,
+        color: Colors.Theme,
     },
     passwordView: {
         flexDirection: 'row',

@@ -1,0 +1,35 @@
+.theme {
+    color: #81AFDD;
+}
+.text {
+    color: #FFFFFF;
+}
+.accent {
+    color: #FF4820;
+}
+.grad1 {
+    color: #AE67F9;
+}
+.grad1 {
+    color: #F1966E;
+}
+
+body{
+    background-color: #040C18;
+}
+.textGradient {
+    /* font-size: 72px; */
+    background: -webkit-linear-gradient(left, #AE67F9, #F1966E 60%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+  input::-webkit-outer-spin-button,
+  input::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+  }
+  
+  /* Firefox */
+  input[type=number] {
+    -moz-appearance: textfield;
+  }

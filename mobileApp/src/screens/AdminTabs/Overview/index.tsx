@@ -9,16 +9,13 @@ import AdminTable from "../../../Components/AdminTable";
 import { apiendpoint } from "../../../constants/apiendpoint";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
-const Overview = () => {
+const Overview = (props: any) => {
   const navigation = useNavigation();
 
   const [username, setUsername] = useState('Samy');
   const [percentage, setPerc] = useState(0);
 
-  const [item, setItem] = useState('obj_demo');
-  const [address, setAddress] = useState('address_demo');
-  const [edd, setEdd] = useState('edd_demo');
-  const [rider, setRider] = useState(0);
+  const [json, setjson] = useState([]);
 
 
   useLayoutEffect(() => {
@@ -57,7 +54,8 @@ const Overview = () => {
       // }
       //saveData();
     }).catch(console.log);
-    fetch(`${apiendpoint}/manager/items/object1`, {
+
+    fetch(`${apiendpoint}/manager/unassigned-items`, {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
@@ -68,11 +66,11 @@ const Overview = () => {
       if (res.ok == true) return res.json();
       else throw new Error("Unauthorized");
     }).then(json => {
-      console.log(JSON.stringify(json,null,2));
-      setItem(json.item.title);
-      setAddress(json.item.address);
-      setEdd(json.item.EDD);
-      setRider(json.item.phone_number);
+      setjson(json.unassigned_items);
+      // setItem(json.item.title);
+      // setAddress(json.item.address);
+      // setEdd(json.item.EDD);
+      // setRider(json.item.phone_number);
       // const saveData = async () => {
       //   await AsyncStorage.setItem("@jwtauth", json.auth.access_token);
       //   await AsyncStorage.setItem("@role", json.user.role);
@@ -81,60 +79,28 @@ const Overview = () => {
     }).catch(console.log);
   }
 
-
-
-  
-const tableData = [
-  {
-    item: item,
-    address: address,
-    edd: edd,
-    rider: rider,
-  },
-  {
-    item: "item A",
-    address:
-      "Address A, 123 Street Address A, 123 Street Address A, 123 Street",
-    edd: "tomorrow",
-    rider: "Shyam Charan",
-  },
-  {
-    item: "item A",
-    address: "Address A, 123 Street",
-    edd: "today",
-    rider: "Shyam Charan",
-  },
-  {
-    item: "item A",
-    address: "Address A, 123 Street",
-    edd: "today",
-    rider: "Shyam Charan",
-  },
-  {
-    item: "item A",
-    address: "Address A, 123 Street",
-    edd: "today",
-    rider: "Shyam Charan",
-  },
-];
-
   return (
     <SafeAreaView style={styles.container}>
-      <HeaderBar />
+      <HeaderBar navigation={props.navigation}/>
       <View style={styles.body}>
         <View>
           <Text style={styles.name}>Welcome, {username}!</Text>
           <Text style={styles.para}>Get a look at the deliveries</Text>
         </View>
-        <LinearGradient style={styles.boxDist} colors={["#AE67F9", "#F1966E"]}>
+        <LinearGradient style={styles.boxDist} 
+        start={{x:0,y:0}}
+        end={{x:1,y:1}}
+        colors={["#AE67F9", "#F1966E"]}>
           <Text style={styles.boxDistText}>X Km Distance Travelled</Text>
         </LinearGradient>
         <View style={styles.boxTime}>
-          <Text style={styles.boxtTimeText}>{percentage}% Delivered Time</Text>
+          <Text style={styles.boxtTimeText}>{percentage}% Delivered on Time</Text>
         </View>
+      </View>
+      <View style={styles.tablecontainer}>
         <View style={styles.table}>
           <ScrollView horizontal={true}>
-            <AdminTable data={tableData}/> 
+            <AdminTable data={json}/> 
           </ScrollView>
         </View>
       </View>
@@ -170,7 +136,7 @@ const styles = StyleSheet.create({
     marginTop: 15,
     width: "100%",
     borderWidth: 2,
-    borderColor: "#AE67F9",
+    borderColor: Colors.Grad1,
     paddingHorizontal: 28,
     paddingVertical: 14,
     borderRadius: 10,
@@ -193,8 +159,13 @@ const styles = StyleSheet.create({
     color: Colors.Text,
     fontSize: 20,
   },
-  table: {
+  tablecontainer: {
     marginTop: 15,
+    flex:1,
+    justifyContent: "center",
+    alignItems:'center',
+  },
+  table: {
   },
 });
 
