@@ -7,12 +7,9 @@ import {
   TouchableOpacity
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
-import MapViewDirections from "react-native-maps-directions";
-import MapView from "react-native-maps";
 import style from "./style";
 import { useNavigation, useFocusEffect } from "@react-navigation/native";
 import OrderItem from "../../../Components/OrderItems";
-import GradientText from "../../../Components/GradientText";
 import HeaderBar from "../../../Components/HeaderBar";
 import { Colors } from "../../../ref/colors";
 import { apiendpoint } from "../../../constants/apiendpoint";
@@ -33,10 +30,35 @@ const ReorderScreen = (props: any) => {
     setOrders(props.route.params.orders);
   }, []);
 
-  const swapElements = (index1, index2) => {
+  const reorderFunc = async () => {
+    var phoneNO = await AsyncStorage.getItem("userid");
+    var jwt = await AsyncStorage.getItem("@jwtauth");
+    if (!jwt) jwt = "";
+    console.log(jwt);
+    console.log(phoneNO);
+    fetch(`${apiendpoint}/rider/route/${phoneNO}`, {
+      method: "GET",
+      headers: {
+        "Content-type": "application/json",
+        Credentials: `Bearer ${jwt}`
+      }
+    })
+      .then((res: any) => {
+        console.log(res.status);
+        if (res.ok) return res.json();
+        else throw new Error("Unauthorized");
+      })
+      .then((json: any) => {
+        console.log(JSON.stringify(json, null, 2));
+      })
+      .catch(console.log);
+  };
+
+  const swapElements = (index1: number, index2: number) => {
     var temp = orders;
     temp[index1] = temp.splice(index2, 1, temp[index1])[0];
     setOrders(temp);
+    setOrder(-1);
   };
 
   const shiftUp = () => {
@@ -59,7 +81,9 @@ const ReorderScreen = (props: any) => {
           return (
             <TouchableOpacity
               onPress={() =>
-                setOrder((prevState) => (prevState === -1 ? order.id : -1))
+                setOrder((prevState) =>
+                  prevState === order.id ? -1 : order.id
+                )
               }
             >
               <OrderItem
@@ -71,40 +95,60 @@ const ReorderScreen = (props: any) => {
           );
         })}
       </ScrollView>
+      <TouchableOpacity
+        onPress={reorderFunc}
+        style={{
+          bottom: 0,
+          margin: 20,
+          padding: 10,
+          borderRadius: 10,
+          position: "absolute",
+          backgroundColor: Colors.Accent
+        }}
+      >
+        <Text style={{ color: Colors.Text }}>Reorder</Text>
+      </TouchableOpacity>
       {order !== -1 && (
-        <View
-          style={{
-            display: "flex",
-            flexDirection: "row",
-            justifyContent: "space-evenly",
-            width: Dimensions.get("screen").width,
-            padding: 20
-          }}
-        >
-          <TouchableOpacity
+        <View>
+          <Text style={{ color: Colors.Text, textAlign: "center" }}>
+            Shift {orders.filter((ord) => ord.id === order)[0].title} ?
+          </Text>
+          <View
             style={{
-              width: 75,
-              padding: 10,
-              borderRadius: 10,
-              backgroundColor: Colors.Accent
+              display: "flex",
+              flexDirection: "row",
+              justifyContent: "space-evenly",
+              width: Dimensions.get("screen").width,
+              padding: 20
             }}
-            onPress={shiftUp}
           >
-            <Text style={{ color: Colors.Text, textAlign: "center" }}>Up</Text>
-          </TouchableOpacity>
-          <TouchableOpacity
-            style={{
-              width: 75,
-              padding: 10,
-              borderRadius: 10,
-              backgroundColor: Colors.Accent
-            }}
-            onPress={shiftDown}
-          >
-            <Text style={{ color: Colors.Text, textAlign: "center" }}>
-              Down
-            </Text>
-          </TouchableOpacity>
+            <TouchableOpacity
+              style={{
+                width: 75,
+                padding: 10,
+                borderRadius: 10,
+                backgroundColor: Colors.Accent
+              }}
+              onPress={shiftUp}
+            >
+              <Text style={{ color: Colors.Text, textAlign: "center" }}>
+                Up
+              </Text>
+            </TouchableOpacity>
+            <TouchableOpacity
+              style={{
+                width: 75,
+                padding: 10,
+                borderRadius: 10,
+                backgroundColor: Colors.Accent
+              }}
+              onPress={shiftDown}
+            >
+              <Text style={{ color: Colors.Text, textAlign: "center" }}>
+                Down
+              </Text>
+            </TouchableOpacity>
+          </View>
         </View>
       )}
     </SafeAreaView>
