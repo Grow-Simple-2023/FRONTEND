@@ -4,13 +4,14 @@ import { Colors } from "../ref/colors";
 import GradrientText from './GradientText'
 
 const OrderItem = (props: any) => {
+
   return (
-    <TouchableOpacity onPress={() => props.setDelivering(props.order)} style={[styles.container, props.transparent ? styles.transparent : styles.opaque]}>
+    <TouchableOpacity onPress={() => props.showModal(props.order)} style={[styles.container, props.transparent ? styles.transparent : styles.opaque]}>
       <Text style={styles.orderName}>{props.name}</Text>
       {props.delivering.id === props.order.id && (
         <GradrientText text={"delivering"} style={styles.ordStatus}/>
       )}
-      <TouchableOpacity onPress={() => props.setDelivering(props.order)} style={styles.cancelContainer}>
+      <TouchableOpacity onPress={() => props.showModal(props.order)} style={styles.cancelContainer}>
         <Text style={styles.cancelbutton}>Delivered</Text>
       </TouchableOpacity>
     </TouchableOpacity>

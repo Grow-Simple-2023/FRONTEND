@@ -1,8 +1,10 @@
-import { StyleSheet } from "react-native";
+import { StyleSheet, Dimensions } from "react-native";
 
 import { Colors } from "../../../ref/colors";
 
 const TrackItemNotchElementSpace = 10;
+
+const width = 0.8*Dimensions.get('window').width;
 
 const style = StyleSheet.create({
     container: {
@@ -38,6 +40,48 @@ const style = StyleSheet.create({
     },
     ordStatus: {
         paddingVertical: 5
+    },
+    modalcenteredView: {
+        flex: 1,
+        justifyContent: 'center',
+        alignItems: 'center',
+    },
+    modalView: {
+        backgroundColor: Colors.Background,
+        borderRadius: 20,
+        padding: 25,
+        alignItems: 'center',
+        elevation: 10,
+    },
+    modalclosebutton: {
+        borderRadius: 20,
+        padding: 10,
+        elevation: 2,
+        backgroundColor: Colors.Accent,
+    },
+    textStyle: {
+        paddingHorizontal:'5%',
+        color: 'white',
+        fontWeight: 'bold',
+        textAlign: 'center',
+    },
+    fieldView: {
+        alignItems:'flex-end',
+        paddingVertical:"5%",
+    },
+    OTPView: {
+        flexDirection: 'row',
+        paddingBottom: 10,
+        borderRadius: 100,
+        borderWidth: 2,
+        borderColor: Colors.Theme,
+        padding: 12,
+        marginBottom: 5,
+        width:width,
+    },
+    OTPinputStyle: {
+        flex:1,
+        color: Colors.Theme,
     },
 });
 
