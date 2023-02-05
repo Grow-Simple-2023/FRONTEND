@@ -6,7 +6,6 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import style from "./style";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { apiendpoint } from "../../../constants/apiendpoint";
-import GradientText from "../../../Components/GradientText";
 
 const SplashScreen = (props: any) => {
   const fontsLoaded = true;

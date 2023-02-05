@@ -1,7 +1,8 @@
 import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
 import React from "react";
 import { Colors } from "../ref/colors";
-import GradrientText from './GradientText'
+import { LinearGradient } from "expo-linear-gradient";
+import GradrientText from "./GradientText";
 
 const OrderItem = (props: any) => {
   return (
@@ -29,7 +30,7 @@ const styles = StyleSheet.create({
     backgroundColor: Colors.Background,
   },
   textColor: {
-    color: Colors.Text,
+    color: Colors.Text
   },
   contact: {
     justifyItems:'flex-end',
@@ -43,6 +44,7 @@ const styles = StyleSheet.create({
     fontSize: 25,
   },
   ordStatus: {
+    color: "#AE67F9",
     paddingVertical: 5
   },
 });

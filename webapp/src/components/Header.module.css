@@ -1,0 +1,25 @@
+.header{
+    color: #FFFFFF;
+    font-size: 1.5rem;
+    display: flex;
+    padding: 2rem;
+    justify-content: space-around;
+}
+.active{
+    color: #FF4820 !important;
+}
+.link{
+    margin: 0 1rem;
+}
+.profileImg img{
+    width: 3.5rem;
+    aspect-ratio: 1;
+    border-radius: 100%;
+    border: 2px solid #FF4820;
+}
+
+@media only screen and (max-width: 600px){
+    .header{
+       justify-content: space-between;
+    }
+}
