@@ -28,7 +28,7 @@ const AdminTabs = () => {
 
     })}>
       
-      <Tab.Screen name="Location" component={Overview} />
+      <Tab.Screen name="Overview" component={Overview} />
       <Tab.Screen name="Orders" component={orders} />
     </Tab.Navigator>
   );
