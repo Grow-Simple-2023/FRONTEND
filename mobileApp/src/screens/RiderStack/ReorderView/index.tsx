@@ -4,7 +4,8 @@ import {
   View,
   Dimensions,
   Text,
-  TouchableOpacity
+  TouchableOpacity,
+  Image
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import style from "./style";
@@ -124,29 +125,27 @@ const ReorderScreen = (props: any) => {
           >
             <TouchableOpacity
               style={{
-                width: 75,
                 padding: 10,
                 borderRadius: 10,
                 backgroundColor: Colors.Accent
               }}
               onPress={shiftUp}
             >
-              <Text style={{ color: Colors.Text, textAlign: "center" }}>
-                Up
-              </Text>
+              <Image
+                source={require("../../../../assets/icons-up.svg")}
+              />
             </TouchableOpacity>
             <TouchableOpacity
               style={{
-                width: 75,
                 padding: 10,
                 borderRadius: 10,
                 backgroundColor: Colors.Accent
               }}
               onPress={shiftDown}
             >
-              <Text style={{ color: Colors.Text, textAlign: "center" }}>
-                Down
-              </Text>
+              <Image
+                source={require("../../../../assets/icons-down.svg")}
+              />
             </TouchableOpacity>
           </View>
         </View>

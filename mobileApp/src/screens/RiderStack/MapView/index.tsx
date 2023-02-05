@@ -4,7 +4,9 @@ import {
   View,
   Dimensions,
   Text,
-  TouchableOpacity
+  TouchableOpacity,
+  Modal,
+  TextInput
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import MapViewDirections from "react-native-maps-directions";
@@ -25,12 +27,19 @@ const RiderScreen = (props: any) => {
   const destination = { latitude: 37.771707, longitude: -122.4053769 };
   const [assign, setassign] = useState(true);
 
+  const [modalVisible, setModalVisible] = useState(false);
+  const [OTP,setOTP] = useState('Enter the OTP here');
+
   const navigation = useNavigation();
   useLayoutEffect(() => {
     navigation.setOptions({
       headerShown: false
     });
   }, []);
+
+  const showModalfn = () => {
+    setModalVisible(true);
+  }
 
   useEffect(() => {
     const func = async () => {
@@ -102,6 +111,38 @@ const RiderScreen = (props: any) => {
           // style={styles.box}
         /> */}
       </View>
+      <View style={style.modalcenteredView}>
+      <Modal
+        animationType="slide"
+        transparent={true}
+        visible={modalVisible}
+        onRequestClose={() => {
+          setModalVisible(!modalVisible);
+        }}>
+        <View style={style.modalcenteredView}>
+          <View style={style.modalView}>
+            <TouchableOpacity
+              style={[style.modalclosebutton]}
+              onPress={() => setModalVisible(!modalVisible)}>
+              <Text style={style.textStyle}>X</Text>
+            </TouchableOpacity>
+            <View style={style.fieldView}>
+              <View style={style.OTPView}>
+                <TextInput
+                  style={style.OTPinputStyle}
+                  value={OTP}
+                  placeholder="SamyC2002"
+                  cursorColor={Colors.Grad2}
+                  selectionColor={"red"}
+                  placeholderTextColor={Colors.Theme}
+                  onChangeText={(username) => setOTP(OTP)}
+                />
+              </View>
+            </View>
+          </View>
+        </View>
+      </Modal>
+    </View>
       <TouchableOpacity
         onPress={() => props.navigation.navigate("Reorder", { orders })}
         style={{
@@ -141,6 +182,7 @@ const RiderScreen = (props: any) => {
                   delivering={delivering}
                   setDelivering={setDelivering}
                   order={order}
+                  showModal={() => showModalfn()}
                 />
               );
             })}
