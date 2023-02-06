@@ -4,17 +4,29 @@ import { ReactBingmaps } from 'react-bingmaps';
 import classes from './Index.module.css';
 
 const Rider = () => {
+	// console.log(window.GeolocationPosition);
+	const [latitude, setLatitude] = React.useState(0);
+	const [longitude, setLongitude] = React.useState(0);
+	navigator.geolocation.getCurrentPosition(function (position) {
+		console.log('Latitude is :', position.coords.latitude);
+		console.log('Longitude is :', position.coords.longitude);
+		setLatitude(position.coords.latitude);
+		setLongitude(position.coords.longitude);
+	});
+
 	return (
 		<div className={classes.index}>
 			<ReactBingmaps
 				className="customClass"
 				id="eleven"
-				center={[13.0827, 80.2707]}
+				center={[latitude, longitude]}
+				zoom={10}
 				bingmapKey={
 					'AtD6KKbxZbMGumtiusZaHBClfullYMvlqCbIacNNkQQu-ONLx-95xel_a6y45wTH'
 				}
 				directions={{
 					requestOptions: { routeMode: 'driving', maxRoutes: 2 },
+
 					wayPoints: [
 						{
 							address: 'Allahabad, Uttar Pradesh',
