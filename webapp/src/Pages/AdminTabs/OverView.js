@@ -97,21 +97,27 @@ const OverView = (props) => {
       })
       .catch(console.log);
   };
+  
+  const cancelOrder = () => { }
+
+  const distribute = () => { }
+  
+  const addOrder = () => { }
 
   return (
     <div className={classes.overveiw}>
-      <div className={classes.welcome} style={{ margin: "2rem" }}>
+      <div className={classes.welcome} style={{ margin: "3rem" }}>
         <p style={{ fontSize: "1.5rem" }}>Welcome, {username}</p>
-        <p style={{ padding: "1rem 2rem" }}>Get a look at the deliveries</p>
+        <p style={{ padding: "1rem 0rem" }}>Get a look at the deliveries</p>
       </div>
 
       <main className={classes.distTime}>
         <Grid
           container
-          // direction="row"
-          // justifyContent="center"
-          // alignItems="center"
-          // spacing={3}
+          direction="row"
+          justifyContent="center"
+          alignItems="center"
+          spacing={3}
         >
           <Grid
             container
@@ -178,9 +184,58 @@ const OverView = (props) => {
           </Table>
         </TableContainer>
       </main>
-      <div className={classes.btn}>
-        <span>Distribute Orders to Riders</span>
-      </div>
+      <main className={classes.btns}>
+        <Grid
+          container
+          // direction="row"
+          // justifyContent="center"
+          // alignItems="center"
+          spacing={3}
+        >
+          <Grid
+            container
+            direction="row"
+            alignItems="center"
+            justifyContent="center"
+            item
+            sm={12}
+            lg={4}
+            md={6}
+          >
+            <div onClick={cancelOrder} className={classes.btn}>
+              <span>Cancel Order</span>
+            </div>
+          </Grid>
+          <Grid
+            container
+            direction="row"
+            alignItems="center"
+            justifyContent="center"
+            item
+            sm={12}
+            lg={4}
+            md={6}
+          >
+            <div onClick={distribute} className={classes.btn}>
+              <span>Distribute Orders to Riders</span>
+            </div>
+          </Grid>
+          <Grid
+            container
+            direction="row"
+            alignItems="center"
+            justifyContent="center"
+            item
+            sm={12}
+            lg={4}
+            md={6}
+          >
+            <div onClick={addOrder} className={classes.btn}>
+              <span>Add Order</span>
+            </div>
+          </Grid>
+        </Grid>
+      </main>
     </div>
   );
 };

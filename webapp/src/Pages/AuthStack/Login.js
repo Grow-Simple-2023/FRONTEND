@@ -31,8 +31,8 @@ const Login = () => {
         console.log(JSON.stringify(json, null, 2));
         console.log(user.userName);
         const saveData = async () => {
-          await localStorage.setItem("@jwtauth", json.token.access_token);
-          await localStorage.setItem("userid", String(user.userName));
+          localStorage.setItem("@jwtauth", json.token.access_token);
+          localStorage.setItem("userid", String(user.userName));
         };
         saveData();
         console.log("role is " + json.role);

@@ -32,12 +32,12 @@ const Signup = () => {
       .then((json) => {
         console.log(JSON.stringify(json, null, 2));
         const saveData = async () => {
-          await localStorage.setItem("@jwtauth", json.auth.access_token);
-          await localStorage.setItem("@role", json.user.role);
+          localStorage.setItem("@jwtauth", json.auth.access_token);
+          localStorage.setItem("@role", json.user.role);
         };
         saveData();
-        if (json.user.role == "RIDER") console.log("Rider");
-        else if (json.user.role == "ADMIN") {
+        if (json.user.role === "RIDER") console.log("Rider");
+        else if (json.user.role === "ADMIN") {
           redirect("/overview");
         }
       })

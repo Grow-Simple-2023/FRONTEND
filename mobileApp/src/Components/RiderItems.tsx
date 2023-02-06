@@ -26,7 +26,8 @@ const styles = StyleSheet.create({
     padding: 10,
     paddingTop: 15,
     paddingLeft: 15,
-    width: 300
+    width: 300,
+    elevation: 10
   },
   transparent: {
     backgroundColor: "rgba(217, 217, 217, 0.1);",

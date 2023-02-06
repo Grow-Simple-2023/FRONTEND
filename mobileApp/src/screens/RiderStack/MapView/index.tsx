@@ -228,7 +228,7 @@ const RiderScreen = (props: any) => {
         <Image
           source={require("../../../../assets/reorder-icon.png")}
          />
-        <Text style={{ color: Colors.Theme, fontFamily:'Rubik', fontSize:16 , padding: 5 }}>Reorder</Text>
+        <Text style={{ color: Colors.Theme, fontFamily:'Rubik', fontSize:16 , padding: 5, textAlign: "right" }}>Reorder</Text>
       </TouchableOpacity>
       <View>
         {!assign ? (
