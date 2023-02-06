@@ -14,6 +14,31 @@ const Rider = () => {
 		setLongitude(position.coords.longitude);
 	});
 
+	const [data, setData] = React.useState([]);
+	const [curInd, setCurInd] = React.useState(0);
+	React.useEffect(() => {
+		console.log('alsdkfjalsdjfladksjflkasdjflkasf');
+		var axios = require('axios');
+		var config = {
+			method: 'get',
+			url: `http://10.250.61.56:8040/rider/route/8103129529`,
+			headers: {
+				Authorization: `Bearer ${window.localStorage.getItem('@jwtauth')}`,
+			},
+		};
+
+		axios(config)
+			.then((response) => {
+				console.log(response.data.route.items_in_order);
+				setData(response.data.route.items_in_order);
+			})
+			.catch((err) => {
+				console.log(err);
+			});
+	}, []);
+	React.useEffect(() => {
+		console.log(data);
+	}, [data]);
 	return (
 		<div className={classes.index}>
 			<ReactBingmaps
@@ -29,20 +54,17 @@ const Rider = () => {
 
 					wayPoints: [
 						{
-							address: 'Allahabad, Uttar Pradesh',
-							location: [25.4358, 81.8463],
+							location: [latitude, longitude],
 						},
 						{
-							address: 'Bengaluru, Karnataka',
-							location: [12.9716, 77.5946],
-						},
-						{
-							address: 'Dharwad, Karnataka',
-							location: [15.531758, 74.936173],
+							address: `${data[curInd].address}`,
+							location: [
+								data[curInd].location.latitude,
+								data[curInd].location.longitude,
+							],
 						},
 					],
 				}}
-				// directions={this.state.directions}
 			></ReactBingmaps>
 		</div>
 	);
