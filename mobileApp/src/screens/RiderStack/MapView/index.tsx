@@ -187,18 +187,29 @@ const RiderScreen = (props: any) => {
                   placeholderTextColor={Colors.Theme}
                   onChangeText={(username) => setOTP(OTP)}
                 />
+                <Image
+                  source={require("../../../../assets/otp-icon-light.png")}
+                  style={{
+                    height: 24,
+                    width: 24,
+                    margin: 10,
+                    resizeMode: "stretch",
+                    alignItems: "center"
+                  }}
+                />
               </View>
-              <View style={{flexDirection: 'row',alignItems: 'center'}}>
-                <Checkbox style={{padding: 10,}}value={isDelivered} onValueChange={setDelivered}/>
-                <Text style={style.textStyle}>Item Delivered</Text>
-              </View>
-              <TouchableOpacity 
-                style={style.modalclosebutton}
-                onPress={() => submitOTP}
-              >
-                <Text style={style.textStyle}>Submit</Text>
-              </TouchableOpacity>
             </View>
+            <View style={{flexDirection: 'row',alignItems: 'center',paddingVertical: 10}}>
+              <Checkbox style={{padding: 10,}}value={isDelivered} onValueChange={setDelivered}/>
+              <Text style={style.textStyle}>Item Delivered</Text>
+            </View>
+            <TouchableOpacity 
+              style={[style.modalclosebutton,{alignSelf:'flex-end'}]}
+              onPress={() => submitOTP}
+            >
+              <Text style={style.textStyle}>Submit</Text>
+            </TouchableOpacity>
+          
           </View>
         </View>
       </Modal>
