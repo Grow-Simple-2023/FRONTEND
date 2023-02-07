@@ -70,6 +70,7 @@ const Form = (props) => {
                 setPassFocus(false);
                 setUserFocus(true);
               }}
+              value={userName}
               className={`${classes.input} ${userFocus ? classes.focus : ""}`}
               type="number"
               placeholder="username"
@@ -88,6 +89,7 @@ const Form = (props) => {
                 setPassFocus(true);
                 setUserFocus(false);
               }}
+              value={password}
               className={`${classes.input} ${passFocus ? classes.focus : ""}`}
               type="password"
               placeholder="password"
@@ -97,9 +99,9 @@ const Form = (props) => {
                 passFocus ? classes.iconFocus : ""
               }`}
             />
-            <div className={classes.forgetPass}>
+            {/* <div className={classes.forgetPass}>
               <span>forgot password</span>
-            </div>
+            </div> */}
           </div>
           <main className={classes.footer}>
             <div className={classes.btn}>

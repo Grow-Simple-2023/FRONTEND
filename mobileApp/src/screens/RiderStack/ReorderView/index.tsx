@@ -1,10 +1,11 @@
-import React, { useLayoutEffect, useEffect, useState } from "react";
+import React, { useLayoutEffect, useEffect, useState, useCallback } from "react";
 import {
   ScrollView,
   View,
   Dimensions,
   Text,
-  TouchableOpacity
+  TouchableOpacity,
+  Image
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import style from "./style";
@@ -14,10 +15,13 @@ import HeaderBar from "../../../Components/HeaderBar";
 import { Colors } from "../../../ref/colors";
 import { apiendpoint } from "../../../constants/apiendpoint";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import GradientText from "../../../Components/GradientText";
 
 const ReorderScreen = (props: any) => {
   const [orders, setOrders] = useState([]);
   const [order, setOrder] = useState(-1);
+
+  const [condition,setconditions] = useState('');
 
   const navigation = useNavigation();
   useLayoutEffect(() => {
@@ -26,22 +30,37 @@ const ReorderScreen = (props: any) => {
     });
   }, []);
 
-  useEffect(() => {
-    setOrders(props.route.params.orders);
-  }, []);
+
+  useFocusEffect(
+    useCallback(() => {
+      setOrders(props.route.params.orders || []);
+
+      return () => {
+        setOrders([]);
+        setOrder(-1);
+        setconditions('');
+      }
+    }, [])
+  );
 
   const reorderFunc = async () => {
     var phoneNO = await AsyncStorage.getItem("userid");
     var jwt = await AsyncStorage.getItem("@jwtauth");
     if (!jwt) jwt = "";
-    console.log(jwt);
-    console.log(phoneNO);
-    fetch(`${apiendpoint}/rider/route/${phoneNO}`, {
-      method: "GET",
+    // console.log(jwt);
+    // console.log(phoneNO);
+    const body = {
+      rider_id: phoneNO,
+      item_ids_in_order: orders.map(order => order.id)
+    };
+    // console.log(JSON.stringify(body, null, 2));
+    fetch(`${apiendpoint}/rider/modify-route`, {
+      method: "POST",
       headers: {
         "Content-type": "application/json",
         Credentials: `Bearer ${jwt}`
-      }
+      },
+      body: JSON.stringify(body)
     })
       .then((res: any) => {
         console.log(res.status);
@@ -50,6 +69,7 @@ const ReorderScreen = (props: any) => {
       })
       .then((json: any) => {
         console.log(JSON.stringify(json, null, 2));
+        props.route.params.backWithRefresh();
       })
       .catch(console.log);
   };
@@ -77,13 +97,16 @@ const ReorderScreen = (props: any) => {
     <SafeAreaView style={style.container}>
       <HeaderBar navigation={props.navigation} />
       <ScrollView>
-        {orders?.map((order: any) => {
+        {orders?.map((order: any, id: number) => {
           return (
             <TouchableOpacity
-              onPress={() =>
+              key={id}
+              onPress={() => {
                 setOrder((prevState) =>
                   prevState === order.id ? -1 : order.id
-                )
+                );
+                setconditions(order.title);
+              }
               }
             >
               <OrderItem
@@ -109,44 +132,47 @@ const ReorderScreen = (props: any) => {
         <Text style={{ color: Colors.Text }}>Reorder</Text>
       </TouchableOpacity>
       {order !== -1 && (
-        <View>
-          <Text style={{ color: Colors.Text, textAlign: "center" }}>
-            Shift {orders.filter((ord) => ord.id === order)[0].title} ?
-          </Text>
+        <View style={{paddingTop:20}}>
+          <GradientText text={
+          <Text>
+            Shift {condition} ?
+          </Text>}
+          style={{ textAlign: "center" , display:'flex',justifyContent: 'center'}}
+          />
           <View
             style={{
               display: "flex",
               flexDirection: "row",
-              justifyContent: "space-evenly",
-              width: Dimensions.get("screen").width,
-              padding: 20
+              justifyContent: "space-between",
+              width: Dimensions.get("screen").width*0.8,
+              padding: 20,
             }}
           >
             <TouchableOpacity
               style={{
-                width: 75,
                 padding: 10,
                 borderRadius: 10,
-                backgroundColor: Colors.Accent
+                borderColor: Colors.Accent,
+                borderWidth: 1,
               }}
               onPress={shiftUp}
             >
-              <Text style={{ color: Colors.Text, textAlign: "center" }}>
-                Up
-              </Text>
+              <Image
+                source={require("../../../../assets/icons-up.png")}
+              />
             </TouchableOpacity>
             <TouchableOpacity
               style={{
-                width: 75,
                 padding: 10,
                 borderRadius: 10,
-                backgroundColor: Colors.Accent
+                borderColor: Colors.Accent,
+                borderWidth: 1,
               }}
               onPress={shiftDown}
             >
-              <Text style={{ color: Colors.Text, textAlign: "center" }}>
-                Down
-              </Text>
+              <Image
+                source={require("../../../../assets/icons-down.png")}
+              />
             </TouchableOpacity>
           </View>
         </View>

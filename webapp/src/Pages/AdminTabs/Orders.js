@@ -8,8 +8,8 @@ const Orders = () => {
     fetchItemsInDelivery();
   }, []);
   const fetchItemsInDelivery = async () => {
-    var jwt = await localStorage.getItem("@jwtauth");
-    var user = await localStorage.getItem("userid");
+    var jwt = localStorage.getItem("@jwtauth");
+    var user = localStorage.getItem("userid");
     if (!user) user = "Samy";
     if (!jwt) jwt = "";
     fetch(`${apiendpoint}/manager/items-in-delivery`, {
@@ -21,46 +21,17 @@ const Orders = () => {
     })
       .then((res) => {
         console.log(res.status);
-        if (res.ok == true) return res.json();
+        if (res.ok === true) return res.json();
         else throw new Error("Unauthorized");
       })
       .then((json) => {
         setUnassignedOrders(json.items_in_delivery);
         console.log(json.items_in_delivery);
-        // const saveData = async () => {
-        //   await AsyncStorage.setItem("@jwtauth", json.auth.access_token);
-        //   await AsyncStorage.setItem("@role", json.user.role);
-        // }
-        //saveData();
       })
       .catch(console.log);
   };
 
-  const orders = [
-    { name: "Item 1", status: "delivered", rider: "x" },
-    { name: "Item 1", status: "delivered", rider: "x" },
-    { name: "Item 1", status: "delivered", rider: "y" },
-    { name: "Item 1", status: "delivering", rider: "z" },
-    { name: "Item 1", status: "delivered", rider: "z" },
-    { name: "Item 1", status: "delivered", rider: "y" },
-    { name: "Item 1", status: "delivering", rider: "z" },
-    { name: "Item 1", status: "delivering", rider: "z" },
-    { name: "Item 1", status: "delivered", rider: "x" },
-  ];
-  const [unassignedOrders, setUnassignedOrders] = useState(orders);
-
-  // let riders = new Set();
-  // for (let order of unassignedOrders) {
-  //   riders.add(order.rider_id);
-  // }
-  // riders = Array.from(riders); // for now rider name is rider_id
-
-  // const sortRidersOrder = (rider_id) => {
-  //   const filterOrders = unassignedOrders.filter((order) => {
-  //     return order.rider_id === rider_id;
-  //   });
-  //   return filterOrders;
-  // };
+  const [unassignedOrders, setUnassignedOrders] = useState([]);
 
   return (
     <div className={classes.orders}>

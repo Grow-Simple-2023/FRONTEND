@@ -49,14 +49,7 @@ const OverView = (props) => {
     },
   ];
 
-  const [item, setItem] = useState("obj_demo");
   const [items, setItems] = useState([]);
-  const [address, setAddress] = useState("address_demo");
-  const [edd, setEdd] = useState("edd_demo");
-  const [rider, setRider] = useState(0);
-
-  console.log("data is ");
-  console.log({ username, percentage, item, address, edd, rider });
 
   useEffect(() => {
     handleSubmit();
@@ -79,41 +72,11 @@ const OverView = (props) => {
     })
       .then((res) => {
         console.log(res.status);
-        if (res.ok == true) return res.json();
+        if (res.ok) return res.json();
         else throw new Error("Unauthorized");
       })
       .then((json) => {
         setPerc(json.percentage);
-        // const saveData = async () => {
-        //   await AsyncStorage.setItem("@jwtauth", json.auth.access_token);
-        //   await AsyncStorage.setItem("@role", json.user.role);
-        // }
-        //saveData();
-      })
-      .catch(console.log);
-    fetch(`${apiendpoint}/manager/items/object1`, {
-      method: "GET",
-      headers: {
-        "Content-Type": "application/json",
-        Credentials: `Bearer ${jwt}`,
-      },
-    })
-      .then((res) => {
-        console.log(res.status);
-        if (res.ok == true) return res.json();
-        else throw new Error("Unauthorized");
-      })
-      .then((json) => {
-        console.log(JSON.stringify(json, null, 2));
-        setItem(json.item.title);
-        setAddress(json.item.address);
-        setEdd(json.item.EDD);
-        setRider(json.item.phone_number);
-        // const saveData = async () => {
-        //   await AsyncStorage.setItem("@jwtauth", json.auth.access_token);
-        //   await AsyncStorage.setItem("@role", json.user.role);
-        // }
-        //saveData();
       })
       .catch(console.log);
     fetch(`${apiendpoint}/manager/unassigned-items`, {
@@ -125,7 +88,7 @@ const OverView = (props) => {
     })
       .then((res) => {
         console.log(res.status);
-        if (res.ok == true) return res.json();
+        if (res.ok) return res.json();
         else throw new Error("Unauthorized");
       })
       .then((json) => {
@@ -134,12 +97,18 @@ const OverView = (props) => {
       })
       .catch(console.log);
   };
+  
+  const cancelOrder = () => { }
+
+  const distribute = () => { }
+  
+  const addOrder = () => { }
 
   return (
     <div className={classes.overveiw}>
-      <div className={classes.welcome} style={{ margin: "2rem" }}>
+      <div className={classes.welcome} style={{ margin: "3rem" }}>
         <p style={{ fontSize: "1.5rem" }}>Welcome, {username}</p>
-        <p style={{ padding: "1rem 2rem" }}>Get a look at the deliveries</p>
+        <p style={{ padding: "1rem 0rem" }}>Get a look at the deliveries</p>
       </div>
 
       <main className={classes.distTime}>
@@ -161,7 +130,7 @@ const OverView = (props) => {
             md={6}
           >
             <div className={classes.dist}>
-              <h1>X km Distance Travelled</h1>
+              <h1>{percentage} % delivered on Time</h1>
             </div>
           </Grid>
           <Grid
@@ -175,7 +144,7 @@ const OverView = (props) => {
             md={6}
           >
             <div className={classes.time}>
-              <h1>{percentage} % delivered on Time</h1>
+              <h1>{items.length} items in Warehouse</h1>
             </div>
           </Grid>
         </Grid>
@@ -187,9 +156,9 @@ const OverView = (props) => {
               <TableRow>
                 <TableCell className={classes.headCell}>Items</TableCell>
                 <TableCell className={classes.headCell}>Address</TableCell>
-                <TableCell className={classes.headCell}>EDD&nbsp;(g)</TableCell>
+                <TableCell className={classes.headCell}>EDD</TableCell>
                 <TableCell className={classes.headCell}>
-                  Rider&nbsp;(g)
+                  Rider
                 </TableCell>
               </TableRow>
             </TableHead>
@@ -215,9 +184,58 @@ const OverView = (props) => {
           </Table>
         </TableContainer>
       </main>
-      <div className={classes.btn}>
-        <span>Distribute Orders to Riders</span>
-      </div>
+      <main className={classes.btns}>
+        <Grid
+          container
+          // direction="row"
+          // justifyContent="center"
+          // alignItems="center"
+          spacing={3}
+        >
+          <Grid
+            container
+            direction="row"
+            alignItems="center"
+            justifyContent="center"
+            item
+            sm={12}
+            lg={4}
+            md={6}
+          >
+            <div onClick={cancelOrder} className={classes.btn}>
+              <span>Cancel Order</span>
+            </div>
+          </Grid>
+          <Grid
+            container
+            direction="row"
+            alignItems="center"
+            justifyContent="center"
+            item
+            sm={12}
+            lg={4}
+            md={6}
+          >
+            <div onClick={distribute} className={classes.btn}>
+              <span>Distribute Orders to Riders</span>
+            </div>
+          </Grid>
+          <Grid
+            container
+            direction="row"
+            alignItems="center"
+            justifyContent="center"
+            item
+            sm={12}
+            lg={4}
+            md={6}
+          >
+            <div onClick={addOrder} className={classes.btn}>
+              <span>Add Order</span>
+            </div>
+          </Grid>
+        </Grid>
+      </main>
     </div>
   );
 };

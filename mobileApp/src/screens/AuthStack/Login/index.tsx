@@ -21,7 +21,7 @@ import { apiendpoint } from "../../../constants/apiendpoint";
 const Login = (props: any) => {
   const [username, setUsername] = React.useState("");
   const [password, setPassword] = React.useState("");
-  const [viewpass,setview] = React.useState(false);
+  const [viewpass,setview] = React.useState(true);
 
   const handleSubmit = async () => {
     // var jwt = await AsyncStorage.getItem("@jwtauth");
@@ -43,15 +43,17 @@ const Login = (props: any) => {
         else throw new Error("Unauthorized");
       })
       .then((json) => {
-        console.log(JSON.stringify(json, null, 2));
+        //console.log(JSON.stringify(json, null, 2));
         console.log(username);
         const saveData = async () => {
           await AsyncStorage.setItem("@jwtauth", json.token.access_token);
           await AsyncStorage.setItem("userid", String(username));
         };
         saveData();
-        if (json.role === "ADMIN") props.navigation.navigate("AdminTabs");
-        else if (json.role === "RIDER") props.navigation.navigate("Rider");
+        setTimeout(() => {
+          if (json.role === "ADMIN") props.navigation.navigate("AdminTabs");
+          else if (json.role === "RIDER") props.navigation.navigate("Rider");
+        },2000);
       })
       .catch(console.log);
   };
@@ -115,7 +117,7 @@ const Login = (props: any) => {
             </TouchableOpacity>
           </View>
           <TouchableOpacity>
-            <Text
+            {/* <Text
               style={[
                 style.LinkText,
                 {
@@ -128,7 +130,7 @@ const Login = (props: any) => {
               ]}
             >
               Forgot Password?
-            </Text>
+            </Text> */}
           </TouchableOpacity>
         </View>
         <View style={style.bottomContainer}>

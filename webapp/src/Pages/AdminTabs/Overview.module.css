@@ -8,15 +8,16 @@
   display: inline-block;
   padding: 1rem;
   border-radius: 1rem;
-  background: linear-gradient(#ae67f9 0%, #f1966e 100%);
+  background: linear-gradient(90deg, #ae67f9 0%, #f1966e 100%);
 }
 .tableDiv{
     margin: 0 auto;
     max-width: 70rem;
     margin-top: 4rem;
-    overflow: scroll;
+    overflow-x: hidden;
+    overflow-y: scroll;
     border-radius: 1rem;
-
+    max-height: 600px;
 }
 .table{
     background-color: rgba(28, 36, 47) !important;

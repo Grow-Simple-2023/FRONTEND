@@ -1,5 +1,5 @@
-import { useNavigation } from "@react-navigation/native";
-import React, { useEffect, useLayoutEffect, useState } from "react";
+import { useFocusEffect, useNavigation } from "@react-navigation/native";
+import React, { useEffect, useLayoutEffect, useState, useCallback } from "react";
 import { ScrollView, StyleSheet, Text, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import HeaderBar from "../../../Components/HeaderBar";
@@ -14,6 +14,7 @@ const Overview = (props: any) => {
 
   const [username, setUsername] = useState('Samy');
   const [percentage, setPerc] = useState(0);
+  const [items,setItems] = useState(0);
 
   const [json, setjson] = useState([]);
 
@@ -24,9 +25,19 @@ const Overview = (props: any) => {
     });
   }, []);
 
-  useEffect(() => {
-    handleSubmit()
-  }, []);
+
+  useFocusEffect(
+    useCallback(() => {
+      handleSubmit()
+
+      return () => {
+        setPerc(0);
+        setItems(0);
+        setjson([]);
+        setUsername("");
+      }
+    }, [])
+  );
 
   const handleSubmit = async () => {
     var jwt = await AsyncStorage.getItem("@jwtauth");
@@ -67,6 +78,7 @@ const Overview = (props: any) => {
       else throw new Error("Unauthorized");
     }).then(json => {
       setjson(json.unassigned_items);
+      setItems(json.unassigned_items.length);
       // setItem(json.item.title);
       // setAddress(json.item.address);
       // setEdd(json.item.EDD);
@@ -91,11 +103,14 @@ const Overview = (props: any) => {
         start={{x:0,y:0}}
         end={{x:1,y:1}}
         colors={["#AE67F9", "#F1966E"]}>
-          <Text style={styles.boxDistText}>X Km Distance Travelled</Text>
+          <Text style={styles.boxDistText}>{percentage}% Delivered on Time</Text>
         </LinearGradient>
-        <View style={styles.boxTime}>
-          <Text style={styles.boxtTimeText}>{percentage}% Delivered on Time</Text>
-        </View>
+        <LinearGradient style={styles.boxTime} 
+        start={{x:0,y:0}}
+        end={{x:1,y:1}}
+        colors={["#AE67F9", "#F1966E"]}>
+          <Text style={styles.boxtTimeText}>{items} items in Warehouse</Text>
+        </LinearGradient>
       </View>
       <View style={styles.tablecontainer}>
         <View style={styles.table}>
@@ -135,15 +150,21 @@ const styles = StyleSheet.create({
   boxTime: {
     marginTop: 15,
     width: "100%",
-    borderWidth: 2,
-    borderColor: Colors.Grad1,
-    paddingHorizontal: 28,
-    paddingVertical: 14,
+    // borderWidth: 2,
+    // borderColor: Colors.Grad1,
+    // paddingHorizontal: 28,
+    // paddingVertical: 14,
     borderRadius: 10,
   },
   boxtTimeText: {
     color: Colors.Text,
     fontSize: 30,
+    backgroundColor: Colors.Background,
+    borderRadius: 10,
+    marginHorizontal: 2,
+    marginVertical: 2,
+    paddingHorizontal: 28,
+    paddingVertical: 14
   },
   namePara: {
     color: Colors.Text,

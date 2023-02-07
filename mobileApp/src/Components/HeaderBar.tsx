@@ -6,17 +6,15 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 const HeaderBar = (props: any) => {
 
   const logout = async () => {
-    await AsyncStorage.clear();
+    await AsyncStorage.removeItem("@jwtauth");
+    await AsyncStorage.removeItem("userid");
+    props.navigation.navigate("Login");
   };
   return (
     <TouchableOpacity 
       style = {styles.container}
       onPress = { () => {
-        logout().then(() =>
-          {
-            props.navigation.navigate("SplashScreen");
-          }
-        ).catch(console.log);
+          logout();
         }}>
         <Image
           style={styles.profImg}
