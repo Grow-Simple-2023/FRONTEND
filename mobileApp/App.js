@@ -8,7 +8,7 @@ import { Colors } from "./src/ref/colors";
 export default function App() {
 
   React.useEffect(() => {
-    StatusBar.setBarStyle("dark-content", true);
+    StatusBar.setBarStyle("default", true);
     StatusBar.setBackgroundColor(Colors.Background);
   }, []);
 
