@@ -14,41 +14,6 @@ const OverView = (props) => {
   const [username, setUsername] = useState("Samy");
   const [percentage, setPerc] = useState(0);
 
-  const tableData = [
-    {
-      item: "item A",
-      address:
-        "Address A, 123 Street Address A, 123 Street Address A, 123 Street",
-      edd: "tomorrow",
-      rider: "Shyam Charan",
-    },
-    {
-      item: "item A",
-      address:
-        "Address A, 123 Street Address A, 123 Street Address A, 123 Street",
-      edd: "tomorrow",
-      rider: "Shyam Charan",
-    },
-    {
-      item: "item A",
-      address: "Address A, 123 Street",
-      edd: "today",
-      rider: "Shyam Charan",
-    },
-    {
-      item: "item A",
-      address: "Address A, 123 Street",
-      edd: "today",
-      rider: "Shyam Charan",
-    },
-    {
-      item: "item A",
-      address: "Address A, 123 Street",
-      edd: "today",
-      rider: "Shyam Charan",
-    },
-  ];
-
   const [items, setItems] = useState([]);
 
   useEffect(() => {
@@ -56,8 +21,8 @@ const OverView = (props) => {
   }, []);
 
   const handleSubmit = async () => {
-    var jwt = await localStorage.getItem("@jwtauth");
-    var user = await localStorage.getItem("userid");
+    var jwt = localStorage.getItem("@jwtauth");
+    var user = localStorage.getItem("userid");
     if (!user) user = "Samy";
     if (!jwt) jwt = "";
     console.log(jwt);
