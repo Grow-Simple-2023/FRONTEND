@@ -1,5 +1,10 @@
-import React, { useLayoutEffect, useEffect, useState, useCallback } from "react";
-import Checkbox from 'expo-checkbox';
+import React, {
+  useLayoutEffect,
+  useEffect,
+  useState,
+  useCallback
+} from "react";
+import Checkbox from "expo-checkbox";
 import {
   ScrollView,
   View,
@@ -30,7 +35,7 @@ const RiderScreen = (props: any) => {
   const [assign, setassign] = useState(true);
 
   const [modalVisible, setModalVisible] = useState(false);
-  const [OTP,setOTP] = useState('');
+  const [OTP, setOTP] = useState("");
   const [isDelivered, setDelivered] = useState(false);
 
   const navigation = useNavigation();
@@ -42,10 +47,10 @@ const RiderScreen = (props: any) => {
 
   const showModalfn = () => {
     setModalVisible(true);
-  }
+  };
 
   const submitOTP = async () => {
-    console.log('selectcontainer');
+    console.log("selectcontainer");
     var phoneNO = await AsyncStorage.getItem("userid");
     var jwt = await AsyncStorage.getItem("@jwtauth");
     var OTP_no = Number(OTP);
@@ -60,8 +65,8 @@ const RiderScreen = (props: any) => {
       },
       body: JSON.stringify({
         item_id: delivering,
-        status: ((isDelivered==false)?0:1),
-        OTP: OTP_no,
+        status: isDelivered == false ? 0 : 1,
+        OTP: OTP_no
       })
     })
       .then((res: any) => {
@@ -73,7 +78,7 @@ const RiderScreen = (props: any) => {
         console.log(JSON.stringify(json, null, 2));
       })
       .catch(console.log);
-  }
+  };
 
   const onRefresh = async () => {
     var phoneNO = await AsyncStorage.getItem("userid");
@@ -115,157 +120,141 @@ const RiderScreen = (props: any) => {
         setModalVisible(false);
         setOTP("");
         setDelivered(false);
-      }
+      };
     }, [])
   );
-  
+
   const backWithRefresh = () => {
     onRefresh();
-  }
+  };
 
   return (
     <SafeAreaView style={style.container}>
-      <View
-        style={{
-          backgroundColor: Colors.Background,
-          height: "100%",
-          width: "100%",
-          flex: 1,
-          position: "absolute"
-        }}
-      >
-        <HeaderBar navigation={props.navigation} />
-        <MapView
-          style={{ flex: 1 }}
-          region={{
-            latitude: 15.5171,
-            longitude: 74.927,
-            latitudeDelta: 0.0922,
-            longitudeDelta: 0.0421
-          }}
-          showsUserLocation={true}
-          showsMyLocationButton={true}
-          userInterfaceStyle={"dark"}
-        >
-          <MapViewDirections
-            origin={origin}
-            destination={destination}
-            apikey={
-              "AtD6KKbxZbMGumtiusZaHBClfullYMvlqCbIacNNkQQu-ONLx-95xel_a6y45wTH"
-            }
-          />
-        </MapView>
-        {/* <BingMapsView
-          credentialsKey="AtD6KKbxZbMGumtiusZaHBClfullYMvlqCbIacNNkQQu-ONLx-95xel_a6y45wTH"
-          mapLocation={{ lat: 12.9010875, long: 77.6095084, zoom: 15 }}
-          // style={styles.box}
-        /> */}
-      </View>
+      <HeaderBar navigation={props.navigation} />
       <View style={style.modalcenteredView}>
-      <Modal
-        animationType="slide"
-        transparent={true}
-        visible={modalVisible}
-        onRequestClose={() => {
-          setModalVisible(!modalVisible);
-        }}>
-        <View style={style.modalcenteredView}>
-          <View style={style.modalView}>
-            <TouchableOpacity
-              style={[style.modalclosebutton]}
-              onPress={() => setModalVisible(!modalVisible)}>
-              <Text style={style.textStyle}>X</Text>
-            </TouchableOpacity>
-            <View style={style.fieldView}>
-              <View style={style.OTPView}>
-                <TextInput
-                  style={style.OTPinputStyle}
-                  value={OTP}
-                  placeholder="Enter OTP here"
-                  cursorColor={Colors.Grad2}
-                  selectionColor={"red"}
-                  placeholderTextColor={Colors.Theme}
-                  onChangeText={(username) => setOTP(OTP)}
-                />
-                <Image
-                  source={require("../../../../assets/otp-icon-light.png")}
-                  style={{
-                    height: 24,
-                    width: 24,
-                    margin: 10,
-                    resizeMode: "stretch",
-                    alignItems: "center"
-                  }}
-                />
+        <Modal
+          animationType="slide"
+          transparent={true}
+          visible={modalVisible}
+          onRequestClose={() => {
+            setModalVisible(!modalVisible);
+          }}
+        >
+          <View style={style.modalcenteredView}>
+            <View style={style.modalView}>
+              <TouchableOpacity
+                style={[style.modalclosebutton]}
+                onPress={() => setModalVisible(!modalVisible)}
+              >
+                <Text style={style.textStyle}>X</Text>
+              </TouchableOpacity>
+              <View style={style.fieldView}>
+                <View style={style.OTPView}>
+                  <TextInput
+                    style={style.OTPinputStyle}
+                    value={OTP}
+                    placeholder="Enter OTP here"
+                    cursorColor={Colors.Grad2}
+                    selectionColor={"red"}
+                    placeholderTextColor={Colors.Theme}
+                    onChangeText={(username) => setOTP(OTP)}
+                  />
+                  <Image
+                    source={require("../../../../assets/otp-icon-light.png")}
+                    style={{
+                      height: 24,
+                      width: 24,
+                      margin: 10,
+                      resizeMode: "stretch",
+                      alignItems: "center"
+                    }}
+                  />
+                </View>
               </View>
+              <View
+                style={{
+                  flexDirection: "row",
+                  alignItems: "center",
+                  paddingVertical: 10
+                }}
+              >
+                <Checkbox
+                  style={{ padding: 10 }}
+                  value={isDelivered}
+                  onValueChange={setDelivered}
+                />
+                <Text style={style.textStyle}>Item Delivered</Text>
+              </View>
+              <TouchableOpacity
+                style={[style.modalclosebutton, { alignSelf: "flex-end" }]}
+                onPress={() => submitOTP}
+              >
+                <Text style={style.textStyle}>Submit</Text>
+              </TouchableOpacity>
             </View>
-            <View style={{flexDirection: 'row',alignItems: 'center',paddingVertical: 10}}>
-              <Checkbox style={{padding: 10,}}value={isDelivered} onValueChange={setDelivered}/>
-              <Text style={style.textStyle}>Item Delivered</Text>
-            </View>
-            <TouchableOpacity 
-              style={[style.modalclosebutton,{alignSelf:'flex-end'}]}
-              onPress={() => submitOTP}
-            >
-              <Text style={style.textStyle}>Submit</Text>
-            </TouchableOpacity>
-          
           </View>
-        </View>
-      </Modal>
-    </View>
+        </Modal>
+      </View>
       <TouchableOpacity
-        onPress={() => props.navigation.navigate("Reorder", { orders, backWithRefresh })}
+        onPress={() =>
+          props.navigation.navigate("Reorder", { orders, backWithRefresh })
+        }
         style={{
           backgroundColor: Colors.Background,
           padding: 15,
           borderRadius: 15,
-          justifyContent:'flex-end',
-          flexDirection:'row',
-          elevation:10,
+          justifyContent: "flex-end",
+          flexDirection: "row",
+          elevation: 10
         }}
       >
-        <Image
-          source={require("../../../../assets/reorder-icon.png")}
-         />
-        <Text style={{ color: Colors.Theme, fontFamily:'Rubik', fontSize:16 , padding: 5, textAlign: "right" }}>Reorder</Text>
+        <Image source={require("../../../../assets/reorder-icon.png")} />
+        <Text
+          style={{
+            color: Colors.Theme,
+            fontFamily: "Rubik",
+            fontSize: 16,
+            padding: 5,
+            textAlign: "right"
+          }}
+        >
+          Reorder
+        </Text>
       </TouchableOpacity>
-      <View>
-        {!assign ? (
-          <Text style={{ color: "white" }}>Rider is Not Assigned</Text>
-        ) : (
-          ""
-        )}
-        <View style={style.orderItems}>
-          <ScrollView
-            pagingEnabled={true}
-            horizontal={true}
-            decelerationRate={0}
-            snapToInterval={width - 60}
-            snapToAlignment={"center"}
-            contentInset={{
-              top: 0,
-              left: 30,
-              bottom: 0,
-              right: 30
-            }}
-          >
-            {orders?.map((order, id) => {
-              return (
-                <OrderItem
-                  key={id}
-                  transparent={false}
-                  name={order.title}
-                  delivering={delivering}
-                  setDelivering={setDelivering}
-                  order={order}
-                  showModal={() => showModalfn()}
-                  // selectcontainerAction = {() => selectcontainerAction()}
-                />
-              );
-            })}
-          </ScrollView>
-        </View>
+      {!assign ? (
+        <Text style={{ color: "white" }}>Rider is Not Assigned</Text>
+      ) : (
+        ""
+      )}
+      <View style={style.orderItems}>
+        <ScrollView
+          pagingEnabled={true}
+          /* horizontal={true} */
+          decelerationRate={0}
+          snapToInterval={width - 60}
+          snapToAlignment={"center"}
+          contentInset={{
+            top: 0,
+            left: 30,
+            bottom: 0,
+            right: 30
+          }}
+        >
+          {orders?.map((order, id) => {
+            return (
+              <OrderItem
+                key={id}
+                transparent={true}
+                name={order.title}
+                delivering={delivering}
+                setDelivering={setDelivering}
+                order={order}
+                showModal={() => showModalfn()}
+              // selectcontainerAction = {() => selectcontainerAction()}
+              />
+            );
+          })}
+        </ScrollView>
       </View>
     </SafeAreaView>
   );

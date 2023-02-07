@@ -6,6 +6,7 @@ import Header from "./components/Header";
 import { useLocation } from "react-router-dom";
 import Login from "./Pages/AuthStack/Login";
 import Signup from "./Pages/AuthStack/Signup";
+import Rider from "./Pages/RiderStack";
 
 function App() {
   let location = useLocation();
@@ -24,6 +25,7 @@ function App() {
         <Route path="/signup" element={<Signup />} />
         <Route path="/orders" element={<Orders />} />
         <Route path="/overview" element={<OverView />} />
+        <Route path="/rider" element={<Rider />} />
       </Routes>
     </div>
   );
