@@ -1,1 +1,3 @@
-export const apiendpoint: string = "http://10.250.61.56:8040"
+export const apiendpoint: string =
+  "https://backend-production-b60c.up.railway.app";
+export const hostname: string = "https://grow-simplee-web.netlify.app";
