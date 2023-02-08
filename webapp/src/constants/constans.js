@@ -1,5 +1,5 @@
-const apiendpoint = "http://192.168.114.139:8000";
-/* const apiendpoint = "http://10.250.61.56:8040"; */
+/* const apiendpoint = "http://localhost:8000"; */
+const apiendpoint = "https://backend-production-b60c.up.railway.app";
 const secretKey = "simple_grow_secret";
 
 module.exports = { secretKey };
