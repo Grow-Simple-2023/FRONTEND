@@ -2,9 +2,19 @@ import { View, Text, StyleSheet, ScrollView } from "react-native";
 import React, { useEffect, useState } from "react";
 import { Colors } from "../ref/colors";
 
-
 const AdminTable = (props: any) => {
   const data = props.data;
+
+  const computeTime = (time: any) => {
+    var currTime: any = new Date();
+    currTime.setHours(0, 0, 0, 0);
+    var diffTime = Math.floor((time - currTime) / 1000 / 60 / 60);
+    console.log(time, currTime);
+    if (diffTime < 24) return "Today";
+    else if (diffTime < 48) return "Tomorrow";
+    else return `${diffTime / 24} days to go`;
+  };
+
   return (
     <ScrollView>
       <View style={styles.container}>
@@ -36,12 +46,14 @@ const AdminTable = (props: any) => {
         </View>
 
         <View style={[styles.edd, styles.head]}>
-          <Text style={styles.heading}>edd</Text>
+          <Text style={styles.heading}>EDD</Text>
           <View style={styles.content}>
             {data.map((data, index) => {
               return (
                 <Text style={styles.entry} key={index}>
-                  {data.EDD}
+                  {computeTime(
+                    new Date(String(data.EDD).replace(" ", "T") + "Z")
+                  )}
                 </Text>
               );
             })}
@@ -53,7 +65,7 @@ const AdminTable = (props: any) => {
             {data.map((data, index) => {
               return (
                 <Text style={styles.entry} key={index}>
-                  {data.phone_number}
+                  {data.phone_number || "-"}
                 </Text>
               );
             })}
@@ -73,7 +85,7 @@ const styles = StyleSheet.create({
     backgroundColor: "rgba(255, 255, 255, 0.1)",
     padding: 10,
     borderRadius: 10,
-    marginBottom: 800,
+    marginBottom: 800
   },
   heading: {
     fontSize: 18,
@@ -81,25 +93,25 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
     textAlign: "center",
     borderBottomColor: "white",
-    borderBottomWidth: 1,
+    borderBottomWidth: 1
     // borderRightWidth: 0.5,
   },
   items: {
-    width: 80,
+    width: 80
   },
   address: {
-    width: 120,
+    width: 120
   },
   edd: {
-    width: 70,
+    width: 70
   },
   riders: {
-    width: 80,
+    width: 80
   },
   head: {
     // paddingHorizontal: 5,
     borderWidth: 0.5,
-    borderColor: "gray",
+    borderColor: "gray"
   },
   entry: {
     fontSize: 13,
@@ -108,8 +120,8 @@ const styles = StyleSheet.create({
     textAlign: "center",
     color: Colors.Text,
     borderBottomColor: "black",
-    borderBottomWidth: 0.25,
-  },
+    borderBottomWidth: 0.25
+  }
 });
 
 export default AdminTable;

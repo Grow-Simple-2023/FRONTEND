@@ -6,9 +6,8 @@ import AuthStackScreen from "./src/navigation/AuthStackScreen";
 import { Colors } from "./src/ref/colors";
 
 export default function App() {
-
   React.useEffect(() => {
-    StatusBar.setBarStyle("default", true);
+    StatusBar.setBarStyle("light-content", true);
     StatusBar.setBackgroundColor(Colors.Background);
   }, []);
 

@@ -1,9 +1,4 @@
-import React, {
-  useLayoutEffect,
-  useEffect,
-  useState,
-  useCallback
-} from "react";
+import React, { useLayoutEffect, useState, useCallback } from "react";
 import Checkbox from "expo-checkbox";
 import {
   ScrollView,
@@ -16,8 +11,6 @@ import {
   Image
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
-import MapViewDirections from "react-native-maps-directions";
-import MapView from "react-native-maps";
 import style from "./style";
 import { useFocusEffect, useNavigation } from "@react-navigation/native";
 import OrderItem from "../../../Components/RiderItems";
@@ -29,9 +22,7 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 const RiderScreen = (props: any) => {
   const { width } = Dimensions.get("window");
   const [orders, setOrders] = useState([]);
-  const [delivering, setDelivering] = useState({});
-  const origin = { latitude: 37.3318456, longitude: -122.0296002 };
-  const destination = { latitude: 37.771707, longitude: -122.4053769 };
+  const [delivering, setDelivering] = useState<any>({});
   const [assign, setassign] = useState(true);
 
   const [modalVisible, setModalVisible] = useState(false);
@@ -51,23 +42,25 @@ const RiderScreen = (props: any) => {
 
   const submitOTP = async () => {
     console.log("selectcontainer");
-    var phoneNO = await AsyncStorage.getItem("userid");
     var jwt = await AsyncStorage.getItem("@jwtauth");
+    console.log(OTP);
     var OTP_no = Number(OTP);
     if (!jwt) props.navigation.navigate("Login");
     // console.log(jwt);
     // console.log(phoneNO);
-    fetch(`${apiendpoint}/rider/route/item-status-update`, {
+    const body = {
+      item_id: delivering.id,
+      status: isDelivered == false ? 0 : 1,
+      OTP: OTP_no
+    };
+    console.log(body);
+    fetch(`${apiendpoint}/rider/item-status-update`, {
       method: "POST",
       headers: {
         "Content-type": "application/json",
         Credentials: `Bearer ${jwt}`
       },
-      body: JSON.stringify({
-        item_id: delivering,
-        status: isDelivered == false ? 0 : 1,
-        OTP: OTP_no
-      })
+      body: JSON.stringify(body)
     })
       .then((res: any) => {
         console.log(res.status);
@@ -76,8 +69,13 @@ const RiderScreen = (props: any) => {
       })
       .then((json: any) => {
         console.log(JSON.stringify(json, null, 2));
+        setModalVisible(false);
+        onRefresh();
       })
-      .catch(console.log);
+      .catch((err) => {
+        console.log(err);
+        setModalVisible(false);
+      });
   };
 
   const onRefresh = async () => {
@@ -157,7 +155,7 @@ const RiderScreen = (props: any) => {
                     cursorColor={Colors.Grad2}
                     selectionColor={"red"}
                     placeholderTextColor={Colors.Theme}
-                    onChangeText={(username) => setOTP(OTP)}
+                    onChangeText={(otp) => setOTP(otp)}
                   />
                   <Image
                     source={require("../../../../assets/otp-icon-light.png")}
@@ -187,7 +185,7 @@ const RiderScreen = (props: any) => {
               </View>
               <TouchableOpacity
                 style={[style.modalclosebutton, { alignSelf: "flex-end" }]}
-                onPress={() => submitOTP}
+                onPress={submitOTP}
               >
                 <Text style={style.textStyle}>Submit</Text>
               </TouchableOpacity>
