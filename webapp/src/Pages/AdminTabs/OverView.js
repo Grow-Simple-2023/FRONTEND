@@ -1,4 +1,4 @@
-import React, { Fragment, useEffect, useState } from "react";
+import React, { useRef, useEffect, useState } from "react";
 import Grid from "@material-ui/core/Grid";
 import Table from "@material-ui/core/Table";
 import TableBody from "@material-ui/core/TableBody";
@@ -15,6 +15,7 @@ import AddDialog from "../../components/AddDialog";
 import classes from "./Overview.module.css";
 
 const OverView = (props) => {
+  const excelRef = useRef(null);
   const [username, setUsername] = useState("Samy");
   const [percentage, setPerc] = useState(0);
 
@@ -146,10 +147,36 @@ const OverView = (props) => {
   const computeTime = (time) => {
     var currTime = new Date();
     currTime.setHours(0, 0, 0, 0);
-    var diffTime = Math.floor((currTime - time) / 1000 / 60 / 60);
+    var diffTime = Math.floor((time - currTime) / 1000 / 60 / 60);
     if (diffTime < 24) return "Today";
     else if (diffTime < 48) return "Tomorrow";
     else return `${diffTime / 24} days to go`;
+  };
+
+  const uploadFile = (e) => {
+    var jwt = localStorage.getItem("@jwtauth");
+    if (!jwt) jwt = "";
+
+    var fd = new FormData();
+    fd.append("file", e.target.files[0]);
+
+    fetch(`${apiendpoint}/manager/load_items/?is_delivered=false`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "multipart/form-data",
+        Credentials: `Bearer ${jwt}`
+      },
+      body: fd
+    })
+      .then((res) => {
+        console.log(res.status);
+        if (res.ok) return res.json();
+        else throw new Error("Unauthorized");
+      })
+      .then((json) => {
+        console.log(json);
+      })
+      .catch(console.log);
   };
 
   return (
@@ -248,8 +275,8 @@ const OverView = (props) => {
             justifyContent="center"
             item
             sm={12}
-            lg={4}
             md={6}
+            lg={3}
           >
             <div onClick={cancelOrder} className={classes.btn}>
               <span>Cancel Order</span>
@@ -262,8 +289,8 @@ const OverView = (props) => {
             justifyContent="center"
             item
             sm={12}
-            lg={4}
             md={6}
+            lg={3}
           >
             <div onClick={distribute} className={classes.btn}>
               <span>Distribute Orders to Riders</span>
@@ -276,11 +303,29 @@ const OverView = (props) => {
             justifyContent="center"
             item
             sm={12}
-            lg={4}
             md={6}
+            lg={3}
           >
             <div onClick={addOrder} className={classes.btn}>
               <span>Add Order</span>
+            </div>
+          </Grid>
+          <Grid
+            container
+            direction="row"
+            alignItems="center"
+            justifyContent="center"
+            item
+            sm={12}
+            md={6}
+            lg={3}
+          >
+            <div
+              onClick={() => excelRef.current.click()}
+              className={classes.btn}
+            >
+              <input type="file" hidden ref={excelRef} onChange={uploadFile} />
+              <span>Upload File</span>
             </div>
           </Grid>
         </Grid>

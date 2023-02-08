@@ -1,5 +1,4 @@
 apply plugin: "com.android.application"
-apply from: 'secrets.gradle'
 
 import com.android.build.OutputFile
 
@@ -167,10 +166,6 @@ android {
                 }
             }
         }
-    }
-
-    buildTypes.each {
-        it.buildConfigField "String", "AtD6KKbxZbMGumtiusZaHBClfullYMvlqCbIacNNkQQu-ONLx-95xel_a6y45wTH", "\"$credentialsKey\""
     }
 
     if (isNewArchitectureEnabled()) {
