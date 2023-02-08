@@ -8,7 +8,8 @@ import {
   TouchableOpacity,
   Modal,
   TextInput,
-  Image
+  Image,
+  RefreshControl
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import style from "./style";
@@ -21,6 +22,7 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 
 const RiderScreen = (props: any) => {
   const { width } = Dimensions.get("window");
+  const [loading, setLoading] = useState(true);
   const [orders, setOrders] = useState([]);
   const [delivering, setDelivering] = useState<any>({});
   const [assign, setassign] = useState(true);
@@ -79,6 +81,7 @@ const RiderScreen = (props: any) => {
   };
 
   const onRefresh = async () => {
+    setLoading(true);
     var phoneNO = await AsyncStorage.getItem("userid");
     var jwt = await AsyncStorage.getItem("@jwtauth");
     if (!jwt) props.navigation.navigate("Login");
@@ -103,8 +106,12 @@ const RiderScreen = (props: any) => {
         }
         setOrders(json.route.items_in_order);
         setDelivering(json.route.items_in_order[0]);
+        setLoading(true);
       })
-      .catch(console.log);
+      .catch((err) => {
+        console.log(err);
+        setLoading(false);
+      });
   };
 
   useFocusEffect(
@@ -237,6 +244,9 @@ const RiderScreen = (props: any) => {
             bottom: 0,
             right: 30
           }}
+          refreshControl={
+            <RefreshControl refreshing={!loading} onRefresh={onRefresh} />
+          }
         >
           {orders?.map((order, id) => {
             return (
