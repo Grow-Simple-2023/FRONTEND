@@ -1,5 +1,4 @@
 import React, { Fragment, useEffect, useState } from "react";
-import classes from "./Overview.module.css";
 import Grid from "@material-ui/core/Grid";
 import Table from "@material-ui/core/Table";
 import TableBody from "@material-ui/core/TableBody";
@@ -8,13 +7,25 @@ import TableContainer from "@material-ui/core/TableContainer";
 import TableHead from "@material-ui/core/TableHead";
 import TableRow from "@material-ui/core/TableRow";
 import Paper from "@material-ui/core/Paper";
+
+import DistributeDialog from "../../components/DistributePopup";
+import CancelDialog from "../../components/CancelDialog";
 import { apiendpoint } from "../../constants/constans";
+import AddDialog from "../../components/AddDialog";
+import classes from "./Overview.module.css";
 
 const OverView = (props) => {
   const [username, setUsername] = useState("Samy");
   const [percentage, setPerc] = useState(0);
 
+  const [cancelPopup, setCancelPopup] = useState(false);
+  const [addPopup, setAddPopup] = useState(false);
+  const [distributePopup, setDistributePopup] = useState(false);
+
   const [items, setItems] = useState([]);
+  const [itemsInDelivery, setItemsInDelivery] = useState([]);
+  const [itemsDelivered, setItemsDelivered] = useState([]);
+  const [riders, setRiders] = useState([]);
 
   useEffect(() => {
     handleSubmit();
@@ -32,8 +43,8 @@ const OverView = (props) => {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
-        Credentials: `Bearer ${jwt}`,
-      },
+        Credentials: `Bearer ${jwt}`
+      }
     })
       .then((res) => {
         console.log(res.status);
@@ -48,8 +59,8 @@ const OverView = (props) => {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
-        Credentials: `Bearer ${jwt}`,
-      },
+        Credentials: `Bearer ${jwt}`
+      }
     })
       .then((res) => {
         console.log(res.status);
@@ -62,12 +73,84 @@ const OverView = (props) => {
       })
       .catch(console.log);
   };
-  
-  const cancelOrder = () => { }
 
-  const distribute = () => { }
-  
-  const addOrder = () => { }
+  const cancelOrder = () => {
+    var jwt = localStorage.getItem("@jwtauth");
+    if (!jwt) jwt = "";
+    fetch(`${apiendpoint}/manager/in-pickup`, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        Credentials: `Bearer ${jwt}`
+      }
+    })
+      .then((res) => {
+        console.log(res.status);
+        if (res.ok) return res.json();
+        else throw new Error("Unauthorized");
+      })
+      .then((json) => {
+        console.log(json);
+        setItemsInDelivery(json.items_in_pickup);
+        setCancelPopup(true);
+      })
+      .catch((err) => console.log(err));
+  };
+
+  const distribute = () => {
+    var jwt = localStorage.getItem("@jwtauth");
+    if (!jwt) jwt = "";
+    fetch(`${apiendpoint}/manager/unassigned-riders`, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        Credentials: `Bearer ${jwt}`
+      }
+    })
+      .then((res) => {
+        console.log(res.status);
+        if (res.ok) return res.json();
+        else throw new Error("Unauthorized");
+      })
+      .then((json) => {
+        console.log(json);
+        setRiders(json.unassigned_riders);
+        setDistributePopup(true);
+      })
+      .catch((err) => console.log(err));
+  };
+
+  const addOrder = () => {
+    var jwt = localStorage.getItem("@jwtauth");
+    if (!jwt) jwt = "";
+    fetch(`${apiendpoint}/manager/delivered`, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        Credentials: `Bearer ${jwt}`
+      }
+    })
+      .then((res) => {
+        console.log(res.status);
+        if (res.ok) return res.json();
+        else throw new Error("Unauthorized");
+      })
+      .then((json) => {
+        console.log(json);
+        setItemsDelivered(json.delivered_items);
+        setAddPopup(true);
+      })
+      .catch((err) => console.log(err));
+  };
+
+  const computeTime = (time) => {
+    var currTime = new Date();
+    currTime.setHours(0, 0, 0, 0);
+    var diffTime = Math.floor((currTime - time) / 1000 / 60 / 60);
+    if (diffTime < 24) return "Today";
+    else if (diffTime < 48) return "Tomorrow";
+    else return `${diffTime / 24} days to go`;
+  };
 
   return (
     <div className={classes.overveiw}>
@@ -122,9 +205,7 @@ const OverView = (props) => {
                 <TableCell className={classes.headCell}>Items</TableCell>
                 <TableCell className={classes.headCell}>Address</TableCell>
                 <TableCell className={classes.headCell}>EDD</TableCell>
-                <TableCell className={classes.headCell}>
-                  Rider
-                </TableCell>
+                <TableCell className={classes.headCell}>Rider</TableCell>
               </TableRow>
             </TableHead>
             <TableBody>
@@ -139,9 +220,12 @@ const OverView = (props) => {
                   <TableCell className={classes.bodyCell}>
                     {row.address}
                   </TableCell>
-                  <TableCell className={classes.bodyCell}>{row.EDD}</TableCell>
+                  {/* <TableCell className={classes.bodyCell}>{row.EDD}</TableCell> */}
                   <TableCell className={classes.bodyCell}>
-                    {row.phone_number}
+                    {computeTime(new Date(row.EDD))}
+                  </TableCell>
+                  <TableCell className={classes.bodyCell}>
+                    {row.phone_number || "-"}
                   </TableCell>
                 </TableRow>
               ))}
@@ -201,6 +285,18 @@ const OverView = (props) => {
           </Grid>
         </Grid>
       </main>
+      <CancelDialog
+        onClose={setCancelPopup}
+        open={cancelPopup}
+        data={itemsInDelivery}
+      />
+      <AddDialog onClose={setAddPopup} open={addPopup} data={itemsDelivered} />
+      <DistributeDialog
+        onClose={setDistributePopup}
+        open={distributePopup}
+        data={riders}
+        items={items}
+      />
     </div>
   );
 };
