@@ -118,7 +118,7 @@ const Rider = () => {
           center={[latitude, longitude]}
           zoom={10}
           bingmapKey={
-            "AtD6KKbxZbMGumtiusZaHBClfullYMvlqCbIacNNkQQu-ONLx-95xel_a6y45wTH"
+            "AvVUlkxNTrHEeZTfD54vtcTns7G04KYvSFMDEpZbxknsbqPiNNyVWoZcxdje_14o"
           }
           directions={{
             requestOptions: { routeMode: "driving", maxRoutes: 2 },
